@@ -54,14 +54,11 @@ public class TwoTriangles extends Mesh {
     shader.setVec3(gl, "pointLights[2].diffuse", light.getMaterial().getDiffuse());
     shader.setVec3(gl, "pointLights[2].specular", light.getMaterial().getSpecular());
 
-
-
-
-    // TODO This section needs to go into sphere.java and cube.java
-    shader.setVec3(gl, "spotLight.position", light.getSpotLightPosition());//new Vec3(0f,10f,-20f)
+    //SpotLight
+    shader.setVec3(gl, "spotLight.position", light.getSpotLightPosition());
     shader.setVec3(gl, "spotLight.direction", light.getSpotLightDirection());
-    shader.setFloat(gl, "spotLight.cutOff", (float)Math.cos(50f));
-    //shader.setFloat(gl, "spotLight.outerCutOff", (float)Math.cos(20f));
+    shader.setFloat(gl, "spotLight.cutOff", (float)Math.cos(0.1f));
+    shader.setFloat(gl, "spotLight.outerCutOff", (float)Math.cos(0.3f));
     shader.setFloat(gl, "spotLight.constant", 1.0f);
     shader.setFloat(gl, "spotLight.linear", 0.022f);
     shader.setFloat(gl, "spotLight.quadratic", 0.0019f);

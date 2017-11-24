@@ -57,6 +57,23 @@ public class Sphere extends Mesh {
     shader.setVec3(gl, "pointLights[2].diffuse", light.getMaterial().getDiffuse());
     shader.setVec3(gl, "pointLights[2].specular", light.getMaterial().getSpecular());
 
+    //SpotLight
+    shader.setVec3(gl, "spotLight.position", light.getSpotLightPosition());
+    shader.setVec3(gl, "spotLight.direction", light.getSpotLightDirection());
+    shader.setFloat(gl, "spotLight.cutOff", (float)Math.cos(0.1f));
+    shader.setFloat(gl, "spotLight.outerCutOff", (float)Math.cos(0.3f));
+    shader.setFloat(gl, "spotLight.constant", 1.0f);
+    shader.setFloat(gl, "spotLight.linear", 0.022f);
+    shader.setFloat(gl, "spotLight.quadratic", 0.0019f);
+    shader.setVec3(gl, "spotLight.ambient", new Vec3(0.1f, 0.1f, 0.1f));
+    shader.setVec3(gl, "spotLight.diffuse", new Vec3(0.8f, 0.8f, 0.8f));
+    shader.setVec3(gl, "spotLight.specular", new Vec3(1.0f, 1.0f, 1.0f));
+
+    shader.setVec3(gl, "material.ambient", material.getAmbient());
+    shader.setVec3(gl, "material.diffuse", material.getDiffuse());
+    shader.setVec3(gl, "material.specular", material.getSpecular());
+    shader.setFloat(gl, "material.shininess", material.getShininess());
+
     //shader.setVec3(gl, "material.ambient", material.getAmbient());
     //shader.setVec3(gl, "material.diffuse", material.getDiffuse());
     //shader.setVec3(gl, "material.specular", material.getSpecular());

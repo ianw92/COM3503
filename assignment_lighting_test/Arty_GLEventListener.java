@@ -90,6 +90,7 @@ public class Arty_GLEventListener implements GLEventListener {
     animation = false;
     double elapsedTime = getSeconds()-startTime;
     savedTime = elapsedTime;
+    armStructure.stopAnimation(false);
   }
 
   public void dimLight() {
@@ -109,6 +110,7 @@ public class Arty_GLEventListener implements GLEventListener {
   public void resetHand() {
     armStructure.resetHand();
     stopAnimation();
+    armStructure.stopAnimation(true);
     savedTime = -1;
     System.out.println(light.getSpotLightPosition());
   }
@@ -116,6 +118,7 @@ public class Arty_GLEventListener implements GLEventListener {
   public void makeI() {
     if (!animation) {
       armStructure.makeI();
+      armStructure.stopAnimation(true);
       savedTime = -1;
     }
     System.out.println(light.getSpotLightPosition());
@@ -124,6 +127,7 @@ public class Arty_GLEventListener implements GLEventListener {
   public void makeA() {
     if (!animation) {
       armStructure.makeA();
+      armStructure.stopAnimation(true);
       savedTime = -1;
     }
     System.out.println(light.getSpotLightPosition());
@@ -132,6 +136,7 @@ public class Arty_GLEventListener implements GLEventListener {
   public void makeN() {
     if (!animation) {
       armStructure.makeN();
+      armStructure.stopAnimation(true);
       savedTime = -1;
     }
     System.out.println(light.getSpotLightPosition());
@@ -140,6 +145,7 @@ public class Arty_GLEventListener implements GLEventListener {
   public void makeVulcan() {
     if (!animation) {
       armStructure.makeVulcan();
+      armStructure.stopAnimation(true);
       savedTime = -1;
     }
     System.out.println(light.getSpotLightPosition());
@@ -257,7 +263,6 @@ public class Arty_GLEventListener implements GLEventListener {
     lamp2.render(gl);
     if (animation) animate(startTime);
     armStructure.render(gl);
-    System.out.println(camera.getFront());
   }
 
   private void updatePerspectiveMatrices() {
@@ -295,11 +300,13 @@ public class Arty_GLEventListener implements GLEventListener {
   private void updateSpotLightPosition() {
     Vec3 pos = armStructure.getRingPosition();
     light.setSpotLightPosition(pos);
+    System.out.println("Pos = " + light.getSpotLightPosition());
   }
 
   private void updateSpotLightDirection() {
     Vec3 direction = armStructure.getRingDirection();
     light.setSpotLightDirection(direction);
+    System.out.println("Dir = " + light.getSpotLightDirection());
   }
 
 }

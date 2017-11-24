@@ -51,6 +51,7 @@ public class ArmStructure {
      animatedN = false;
      animatedVulcan = false;
      animationTime = 0;
+     animating = false;
    }
 
    public void makeI() {
@@ -181,10 +182,14 @@ public class ArmStructure {
   private boolean animatedA = false;
   private boolean animatedN = false;
   private boolean animatedVulcan = false;
-  public double animationTime = 0;
+  private double elapsedTime = 0;
+  private double animationTime = 0;
+  private boolean animating = false;
+  private boolean midAnimation = false;
 
   public void animate(double startTime) {
-    double elapsedTime = (Arty_GLEventListener.getSeconds()-startTime);
+    animating = true;
+    elapsedTime = (Arty_GLEventListener.getSeconds()-startTime);
 
     if (!animatedI) {
       float rotateTS1ZAngle = -35f+10f*(float)Math.sin(elapsedTime-animationTime);
@@ -230,6 +235,17 @@ public class ArmStructure {
       }
     }
     armStructure.update();
+    System.out.println(animationTime);
+  }
+
+  public void stopAnimation(boolean resetStop) {
+    animating = false;
+    if (resetStop) {
+      midAnimation = false;
+    }
+    else {
+      midAnimation = true;
+    }
   }
 
   public void animateI(float rotateTS1ZAngle, double time) {
@@ -356,7 +372,7 @@ public class ArmStructure {
   public Vec3 getRingPosition() {
     // if time = 0 then the hand is in a static position (i.e. 'rest', 'i', 'a', 'n', or 'vulcan')
     float x=0, y=0, z=0;
-    if (animationTime == 0) {
+    if (!animating && !midAnimation) {
       if (!animatedI) {
         // ring not moved
         x = 1.13f;
@@ -392,18 +408,33 @@ public class ArmStructure {
       //need to work out where in animation the ring is
       if (!animatedI) {
         // somewhere between rest and 'I'
+        x = 1.13f;
+        y = 10.92f-0.12f*(float)Math.sin(elapsedTime - animationTime);
+        z = -0.3f+0.72f*(float)Math.sin(elapsedTime - animationTime);
       }
       else if (!animatedA) {
         // somewhere between 'I' and 'A'
+        x = 1.13f;
+        y = 10.8f;
+        z = 0.42f;
       }
       else if (!animatedN) {
         // somewhere between 'A' and 'N'
+        x = 1.13f;
+        y = 10.8f+0.21f*(float)Math.sin(elapsedTime - animationTime);
+        z = 0.42f-0.23f*(float)Math.sin(elapsedTime - animationTime);
       }
       else if (!animatedVulcan) {
         // somewhere between 'N' and 'Vulcan'
+        x = 1.13f+0.14f*(float)Math.sin(elapsedTime - animationTime);
+        y = 11.01f-0.11f*(float)Math.sin(elapsedTime - animationTime);
+        z = 0.09f-0.39f*(float)Math.sin(elapsedTime - animationTime);
       }
       else {
         // somewhere between 'Vulcan' and 'rest'
+        x = 1.27f-0.14f*(float)Math.sin(elapsedTime - animationTime);
+        y = 10.9f+0.02f*(float)Math.sin(elapsedTime - animationTime);
+        z = -0.3f;
       }
     }
     return new Vec3(x,y,z);
@@ -412,7 +443,7 @@ public class ArmStructure {
   public Vec3 getRingDirection() {
     // if time = 0 then the hand is in a static position (i.e. 'rest', 'i', 'a', 'n', or 'vulcan')
     float x=0, y=0, z=0;
-    if (animationTime == 0) {
+    if (!animating && !midAnimation) {
       if (!animatedI) {
         // ring not moved
         x = 0f;
@@ -421,45 +452,61 @@ public class ArmStructure {
       }
       else if (!animatedA) {
         // ring at I position
-        x = 1.13f;
-        y = 10.8f;
-        z = 0.42f;
+        x = 0f;
+        y = 1f;
+        z = 0f;
       }
       else if (!animatedN) {
         // ring at A position
-        x = 1.13f;
-        y = 10.8f;
-        z = 0.42f;
+        x = 0f;
+        y = 1f;
+        z = 0f;
       }
       else if (!animatedVulcan) {
         // ring at N position
-        x = 1.13f;
-        y = 11.01f;
-        z = 0.09f;
+        x = 0f;
+        y = 1f;
+        z = -1f;
       }
       else {
         // ring at vulcan position
-        x = 1.27f;
-        y = 10.9f;
-        z = -0.3f;
+        x = 0f;
+        y = 0f;
+        z = -1f;
       }
     }
     else {
       //need to work out where in animation the ring is
       if (!animatedI) {
         // somewhere between rest and 'I'
+        x = 0f;
+        y = (float)Math.sin(elapsedTime - animationTime);
+        z = -1f + (float)Math.sin(elapsedTime - animationTime);
+        System.out.println("HSADKHSJ  " + elapsedTime);
       }
       else if (!animatedA) {
         // somewhere between 'I' and 'A'
+        x = 0f;
+        y = 1f;
+        z = 0f;
       }
       else if (!animatedN) {
         // somewhere between 'A' and 'N'
+        x = 0f;
+        y = 1f;
+        z = 0f-(float)Math.sin(elapsedTime - animationTime);
       }
       else if (!animatedVulcan) {
         // somewhere between 'N' and 'Vulcan'
+        x = 0f;
+        y = 1f-(float)Math.sin(elapsedTime - animationTime);
+        z = -1f;
       }
       else {
         // somewhere between 'Vulcan' and 'rest'
+        x = 0f;
+        y = 0f;
+        z = -1f;
       }
     }
     return new Vec3(x,y,z);

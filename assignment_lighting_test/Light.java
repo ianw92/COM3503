@@ -94,15 +94,6 @@ public class Light {
 
       gl.glDrawElements(GL.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, 0);
     }
-    //SpotLight
-    model = new Mat4(1);
-    model = Mat4.multiply(Mat4Transform.scale(0.2f,0.2f,0.2f), model);
-    model = Mat4.multiply(Mat4Transform.translate(spotLightPosition), model);
-    mvpMatrix = Mat4.multiply(perspective, Mat4.multiply(camera.getViewMatrix(), model));
-    shader.use(gl);
-    shader.setFloatArray(gl, "mvpMatrix", mvpMatrix.toFloatArrayForGLSL());
-
-    gl.glDrawElements(GL.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, 0);
 
     gl.glBindVertexArray(0);
   }
