@@ -70,7 +70,25 @@ public class Arty_GLEventListener implements GLEventListener {
    *
    *
    */
+  // Lighting Interaction
+  public void mainLightOff() {
+   light.setLightLevel(0,0,0, "main");
+  }
 
+  public void mainLightOn() {
+   light.setLightLevel(0.15f,0.5f,0.7f, "main");
+  }
+
+  public void lampsOff() {
+   light.setLightLevel(0,0,0, "point");
+  }
+
+  public void lampsOn() {
+   light.setLightLevel(0.05f,0.4f,0.8f, "point");
+  }
+
+
+  // Hand Interaction
   private boolean animation = false;
   private double savedTime = 0;
 
@@ -91,20 +109,6 @@ public class Arty_GLEventListener implements GLEventListener {
     double elapsedTime = getSeconds()-startTime;
     savedTime = elapsedTime;
     armStructure.stopAnimation(false);
-  }
-
-  public void dimLight() {
-    float lightLevel = light.getAmbientLightLevel();
-    if (lightLevel > 0) {
-      light.setAmbientLightLevel(lightLevel-0.1f);
-    }
-  }
-
-  public void brightenLight() {
-    float lightLevel = light.getAmbientLightLevel();
-    if (lightLevel < 1) {
-      light.setAmbientLightLevel(lightLevel+0.1f);
-    }
   }
 
   public void resetHand() {
@@ -168,12 +172,8 @@ public class Arty_GLEventListener implements GLEventListener {
 
   private ArmStructure armStructure;
   private Lamp lamp1, lamp2;
+  private WallLamp wallLamp1, wallLamp2;
   private Room room;
-
-  // private float xPosition = 0;
-  // private TransformNode translateX, robotMoveTranslate, leftArmRotate, rightArmRotate;
-  // private TransformNode armStructureMoveTranslate, thumbSegment1TranslateLocal;
-  //
 
   private void initialise(GL3 gl) {
     int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/chequerboard.jpg");
@@ -238,14 +238,27 @@ public class Arty_GLEventListener implements GLEventListener {
 
     lamp1 = new Lamp(cube, sphere);
     lamp1.setSize(3,9,3);
-    lamp1.setPosition(-18,0,-15);
+    lamp1.setPosition(-18,0,-18);
     lamp1.initialise(gl);
+    light.setPointLightPosition(new Vec3(-18,10+(1f/3f*3f),-18), 1);
 
     lamp2 = new Lamp(cube, sphere);
     lamp2.setSize(5,11,5);
-    lamp2.setPosition(15,0,-15);
+    lamp2.setPosition(15,0,15);
     lamp2.initialise(gl);
+    light.setPointLightPosition(new Vec3(15,12f+(1f/3f*5f),15), 2);
 
+    wallLamp1 = new WallLamp(cube, sphere);
+    wallLamp1.setSize(3,9,3);
+    wallLamp1.setPosition(-20,20,15);
+    wallLamp1.initialise(gl);
+    light.setPointLightPosition(new Vec3((-20f+3f+0.5f+0.25f),(20f+3f+0.75f),15), 3);
+
+    wallLamp2 = new WallLamp(cube, sphere);
+    wallLamp2.setSize(3,9,3);
+    wallLamp2.setPosition(20,18,-3);
+    wallLamp2.initialise(gl);
+    light.setPointLightPosition(new Vec3((20f-3f-0.5f-0.25f),(18f+3f+0.75f),-3), 4);
 
     room = new Room(floor, wall1, wall2, wall3, wall4, ceiling, window);
 
@@ -261,6 +274,8 @@ public class Arty_GLEventListener implements GLEventListener {
     room.render(gl);
     lamp1.render(gl);
     lamp2.render(gl);
+    wallLamp1.render(gl);
+    wallLamp2.render(gl);
     if (animation) animate(startTime);
     armStructure.render(gl);
   }
@@ -300,13 +315,13 @@ public class Arty_GLEventListener implements GLEventListener {
   private void updateSpotLightPosition() {
     Vec3 pos = armStructure.getRingPosition();
     light.setSpotLightPosition(pos);
-    System.out.println("Pos = " + light.getSpotLightPosition());
+    // System.out.println("Pos = " + light.getSpotLightPosition());
   }
 
   private void updateSpotLightDirection() {
     Vec3 direction = armStructure.getRingDirection();
     light.setSpotLightDirection(direction);
-    System.out.println("Dir = " + light.getSpotLightDirection());
+    // System.out.println("Dir = " + light.getSpotLightDirection());
   }
 
 }

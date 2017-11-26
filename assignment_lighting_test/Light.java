@@ -13,18 +13,29 @@ public class Light {
   private Shader shader;
   private Camera camera;
   private Mat4 perspective;
-  private float ambientLightLevel = 0.5f;
-  private float diffuseLightLevel = 0.8f;
-  private float specularLightLevel = 1.0f;
+  private float ambientLightLevelMain = 0.15f;
+  private float diffuseLightLevelMain = 0.5f;
+  private float specularLightLevelMain = 0.7f;
+
+  private float ambientLightLevelPoint = 0.05f;
+  private float diffuseLightLevelPoint = 0.4f;
+  private float specularLightLevelPoint = 0.8f;
+
+  private float ambientLightLevelSpot = 0f;
+  private float diffuseLightLevelSpot = 0.8f;
+  private float specularLightLevelSpot = 1.0f;
 
   public Light(GL3 gl) {
     material = new Material();
-    material.setAmbient(ambientLightLevel, ambientLightLevel, ambientLightLevel);
-    material.setDiffuse(diffuseLightLevel, diffuseLightLevel, diffuseLightLevel);
-    material.setSpecular(specularLightLevel, specularLightLevel, specularLightLevel);
-    // material.setAmbient(0,0,0);
-    // material.setDiffuse(0,0,0);
-    // material.setSpecular(0,0,0);
+    material.setAmbient(ambientLightLevelMain, ambientLightLevelMain, ambientLightLevelMain, "main");
+    material.setDiffuse(diffuseLightLevelMain, diffuseLightLevelMain, diffuseLightLevelMain, "main");
+    material.setSpecular(specularLightLevelMain, specularLightLevelMain, specularLightLevelMain, "main");
+    material.setAmbient(ambientLightLevelPoint, ambientLightLevelPoint, ambientLightLevelPoint, "point");
+    material.setDiffuse(diffuseLightLevelPoint, diffuseLightLevelPoint, diffuseLightLevelPoint, "point");
+    material.setSpecular(specularLightLevelPoint, specularLightLevelPoint, specularLightLevelPoint, "point");
+    material.setAmbient(ambientLightLevelSpot, ambientLightLevelSpot, ambientLightLevelSpot, "spot");
+    material.setDiffuse(diffuseLightLevelSpot, diffuseLightLevelSpot, diffuseLightLevelSpot, "spot");
+    material.setSpecular(specularLightLevelSpot, specularLightLevelSpot, specularLightLevelSpot, "spot");
     position = new Vec3(3f,2f,1f);
     model = new Mat4(1);
     shader = new Shader(gl, "vs_light_01.txt", "fs_light_01.txt");
@@ -32,12 +43,16 @@ public class Light {
   }
 
   public float getAmbientLightLevel() {
-    return this.ambientLightLevel;
+    return this.ambientLightLevelMain;
   }
 
-  public void setAmbientLightLevel(float ambientLightLevel) {
-    this.ambientLightLevel = ambientLightLevel;
-    material.setAmbient(ambientLightLevel, ambientLightLevel, ambientLightLevel);
+  public void setLightLevel(float ambientLightLevel, float diffuseLightLevel, float specularLightLevel, String lightType) {
+    this.ambientLightLevelMain = ambientLightLevel;
+    this.diffuseLightLevelMain = diffuseLightLevel;
+    this.specularLightLevelMain = specularLightLevel;
+    material.setAmbient(ambientLightLevel, ambientLightLevel, ambientLightLevel, lightType);
+    material.setDiffuse(diffuseLightLevel, diffuseLightLevel, diffuseLightLevel, lightType);
+    material.setSpecular(specularLightLevel, specularLightLevel, specularLightLevel, lightType);
   }
 
   // Get position of point light
@@ -59,6 +74,10 @@ public class Light {
 
   public void setSpotLightDirection(Vec3 direction) {
     spotLightDirection = direction;
+  }
+
+  public void setPointLightPosition(Vec3 position, int lamp) {
+    pointLightPositions[lamp] = position;
   }
 
   public void setMaterial(Material m) {
@@ -136,9 +155,11 @@ public class Light {
     };
 
     private Vec3[] pointLightPositions = new Vec3[] {
-      new Vec3(0f,30f,0f),
-      new Vec3(20f,10f,0f),
-      new Vec3(-20f,10f,0f),
+      new Vec3(0f,30f,0f), //Main light on ceiling
+      new Vec3(0f,0f,0f), //Lamp1
+      new Vec3(0f,0f,0f), //Lamp2
+      new Vec3(0f,0f,0f), //WallLamp1
+      new Vec3(0f,0f,0f), //WallLamp2
     };
 
   private int vertexStride = 3;

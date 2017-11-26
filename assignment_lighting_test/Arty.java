@@ -43,10 +43,16 @@ public class Arty extends JFrame implements ActionListener {
     menuBar.add(fileMenu);
 
     JPanel p = new JPanel();
-      JButton b = new JButton("dim light");
+      JButton b = new JButton("main light off");
       b.addActionListener(this);
       p.add(b);
-      b = new JButton("brighten light");
+      b = new JButton("main light on");
+      b.addActionListener(this);
+      p.add(b);
+      b = new JButton("lamps off");
+      b.addActionListener(this);
+      p.add(b);
+      b = new JButton("lamps on");
       b.addActionListener(this);
       p.add(b);
       b = new JButton("camera X");
@@ -91,11 +97,17 @@ public class Arty extends JFrame implements ActionListener {
   }
 
   public void actionPerformed(ActionEvent e) {
-    if (e.getActionCommand().equalsIgnoreCase("dim light")) {
-      glEventListener.dimLight();
+    if (e.getActionCommand().equalsIgnoreCase("main light off")) {
+      glEventListener.mainLightOff();
     }
-    else if (e.getActionCommand().equalsIgnoreCase("brighten light")) {
-      glEventListener.brightenLight();
+    else if (e.getActionCommand().equalsIgnoreCase("main light on")) {
+      glEventListener.mainLightOn();
+    }
+    else if (e.getActionCommand().equalsIgnoreCase("lamps on")) {
+      glEventListener.lampsOn();
+    }
+    else if (e.getActionCommand().equalsIgnoreCase("lamps off")) {
+      glEventListener.lampsOff();
     }
     else if (e.getActionCommand().equalsIgnoreCase("camera X")) {
       camera.setCamera(Camera.CameraType.X);
