@@ -167,7 +167,8 @@ public class Arty_GLEventListener implements GLEventListener {
 
   private Camera camera;
   private Mat4 perspective;
-  private Mesh floor, wall1, wall2, wall3, wall4, ceiling, window, sphere, cube, cubeRing, sphereGemstone;
+  private Mesh floor, wall1, wall2, wall3, ceiling, window, sphere, cube, cubeRing, sphereGemstone;
+  private TwoTriangles wall4_bottom, wall4_top, wall4_left, wall4_right;
   private Light light;
 
   private ArmStructure armStructure;
@@ -197,9 +198,18 @@ public class Arty_GLEventListener implements GLEventListener {
 
     floor = new TwoTriangles(gl, textureId2);
     wall1 = new TwoTriangles(gl, textureId7);
-    wall2 = new TwoTriangles(gl, textureId16);
+    wall2 = new TwoTriangles(gl, textureId10);
     wall3 = new TwoTriangles(gl, textureId9);
-    wall4 = new TwoTriangles(gl, textureId10);
+
+    float[] textureCoordsBottom = {0,0.25f,   0,0,   1,0,   1,0.25f};
+    wall4_bottom = new TwoTriangles(gl, textureId16, textureCoordsBottom);
+    float[] textureCoordsTop = {0,1,   0,0.75f,   1,0.75f,   1,1};
+    wall4_top = new TwoTriangles(gl, textureId16, textureCoordsTop);
+    float[] textureCoordsLeft = {0,0.75f,   0,0.25f,    0.25f,0.25f,   0.25f,0.75f};
+    wall4_left = new TwoTriangles(gl, textureId16, textureCoordsLeft);
+    float[] textureCoordsRight = {0.75f, 0.75f,   0.75f, 0.25f,   1, 0.25f,   1, 0.75f};
+    wall4_right = new TwoTriangles(gl, textureId16, textureCoordsRight);
+
     ceiling = new TwoTriangles(gl, textureId11);
     window = new TwoTriangles(gl, textureId17);
     sphere = new Sphere(gl, textureId15, textureId15);
@@ -218,8 +228,16 @@ public class Arty_GLEventListener implements GLEventListener {
     wall2.setCamera(camera);
     wall3.setLight(light);
     wall3.setCamera(camera);
-    wall4.setLight(light);
-    wall4.setCamera(camera);
+
+    wall4_bottom.setLight(light);
+    wall4_bottom.setCamera(camera);
+    wall4_top.setLight(light);
+    wall4_top.setCamera(camera);
+    wall4_left.setLight(light);
+    wall4_left.setCamera(camera);
+    wall4_right.setLight(light);
+    wall4_right.setCamera(camera);
+
     ceiling.setLight(light);
     ceiling.setCamera(camera);
     window.setLight(light);
@@ -260,7 +278,7 @@ public class Arty_GLEventListener implements GLEventListener {
     wallLamp2.initialise(gl);
     light.setPointLightPosition(new Vec3((20f-3f-0.5f-0.25f),(18f+3f+0.75f),-3), 4);
 
-    room = new Room(floor, wall1, wall2, wall3, wall4, ceiling, window);
+    room = new Room(floor, wall1, wall2, wall3, wall4_bottom, wall4_top, wall4_left, wall4_right, ceiling);
 
   }
 
@@ -288,7 +306,10 @@ public class Arty_GLEventListener implements GLEventListener {
     wall1.setPerspective(perspective);
     wall2.setPerspective(perspective);
     wall3.setPerspective(perspective);
-    wall4.setPerspective(perspective);
+    wall4_bottom.setPerspective(perspective);
+    wall4_top.setPerspective(perspective);
+    wall4_left.setPerspective(perspective);
+    wall4_right.setPerspective(perspective);
     ceiling.setPerspective(perspective);
     window.setPerspective(perspective);
     sphere.setPerspective(perspective);
@@ -303,7 +324,10 @@ public class Arty_GLEventListener implements GLEventListener {
     wall1.dispose(gl);
     wall2.dispose(gl);
     wall3.dispose(gl);
-    wall4.dispose(gl);
+    wall4_bottom.dispose(gl);
+    wall4_top.dispose(gl);
+    wall4_left.dispose(gl);
+    wall4_right.dispose(gl);
     ceiling.dispose(gl);
     window.dispose(gl);
     sphere.dispose(gl);

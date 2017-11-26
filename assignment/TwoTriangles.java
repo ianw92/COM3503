@@ -26,6 +26,30 @@ public class TwoTriangles extends Mesh {
     fillBuffers(gl);
   }
 
+  public TwoTriangles(GL3 gl, int[] textureId, float[] textureCoords) {
+    super(gl);
+    setTexCoords(textureCoords);
+    System.out.println();
+    for (int i=0; i<32; i++) {
+      System.out.println(vertices[i]);
+    }
+    super.vertices = this.vertices;
+    super.indices = this.indices;
+    this.textureId = textureId;
+    material.setAmbient(1.0f, 0.5f, 0.31f, "main");
+    material.setDiffuse(1.0f, 0.5f, 0.31f, "main");
+    material.setSpecular(0.5f, 0.5f, 0.5f, "main");
+    material.setAmbient(1.0f, 0.5f, 0.31f, "point");
+    material.setDiffuse(1.0f, 0.5f, 0.31f, "point");
+    material.setSpecular(0.5f, 0.5f, 0.5f, "point");
+    material.setAmbient(1.0f, 0.5f, 0.31f, "spot");
+    material.setDiffuse(1.0f, 0.5f, 0.31f, "spot");
+    material.setSpecular(0.5f, 0.5f, 0.5f, "spot");
+    material.setShininess(32.0f);
+    shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
+    fillBuffers(gl);
+  }
+
   public void render(GL3 gl, Mat4 model) {
     Mat4 mvpMatrix = Mat4.multiply(perspective, Mat4.multiply(camera.getViewMatrix(), model));
 
@@ -106,6 +130,14 @@ public class TwoTriangles extends Mesh {
   public void dispose(GL3 gl) {
     super.dispose(gl);
     gl.glDeleteBuffers(1, textureId, 0);
+  }
+
+  public void setTexCoords(float[] texCoords) {
+    for (int i=0;i<4;i++) {
+      for (int j=0;j<2;j++) {
+        vertices[(i*8)+6+j] = texCoords[(i*2)+j];
+      }
+    }
   }
 
   // ***************************************************
