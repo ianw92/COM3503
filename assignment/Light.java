@@ -93,55 +93,65 @@ public class Light {
     this.perspective = perspective;
   }
 
-  public void render(GL3 gl) { //, Mat4 perspective, Mat4 view) {
+  // sets the color of the light 'bulb' to either grey (off) or white (on)
+  public void setLightColor(GL3 gl, int i) {
+    float mainAmbient = material.getAmbient("main").x;
+    float lampAmbient = material.getAmbient("point").x;
+    if (i==0 || i==1) {
+      if (mainAmbient==0) {
+        if (lampAmbient==0) {
+          shader.setFloat(gl, "lightColor", 0f);
+        }
+        else {
+          shader.setFloat(gl, "lightColor", 0.2f);
+        }
+      }
+      else {
+        shader.setFloat(gl, "lightColor", 1.0f);
+      }
+    }
+    else{
+      if (lampAmbient==0) {
+        if (mainAmbient==0) {
+          shader.setFloat(gl, "lightColor", 0f);
+        }
+        else {
+          shader.setFloat(gl, "lightColor", 0.2f);
+        }
+      }
+      else {
+        shader.setFloat(gl, "lightColor", 1.0f);
+      }
+    }
+  }
+
+  // draw the light 'bulb'
+  public void drawLight(GL3 gl, int i) {
     Mat4 model;
     Mat4 mvpMatrix;
+    model = new Mat4(1);
+    model = Mat4.multiply(Mat4Transform.scale(1f,1f,1f), model);
+    if (i==2 || i==3) {
+      model = Mat4.multiply(Mat4Transform.scale(2f,2f,2f), model);
+    }
+    model = Mat4.multiply(Mat4Transform.translate(pointLightPositions[i]), model);
+    model = Mat4.multiply(Mat4Transform.translate(0,0.5f,0), model);
+
+    mvpMatrix = Mat4.multiply(perspective, Mat4.multiply(camera.getViewMatrix(), model));
+
+    shader.use(gl);
+    shader.setFloatArray(gl, "mvpMatrix", mvpMatrix.toFloatArrayForGLSL());
+
+    gl.glDrawElements(GL.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, 0);
+  }
+
+  public void render(GL3 gl) {
     gl.glBindVertexArray(vertexArrayId[0]);
 
     shader.use(gl);
     for (int i = 0; i < pointLightPositions.length; i++) {
-      float mainAmbient = material.getAmbient("main").x;
-      float lampAmbient = material.getAmbient("point").x;
-      if (i==0 || i==1) {
-        if (mainAmbient==0) {
-          if (lampAmbient==0) {
-            shader.setFloat(gl, "lightColor", 0f);
-          }
-          else {
-            shader.setFloat(gl, "lightColor", 0.2f);
-          }
-        }
-        else {
-          shader.setFloat(gl, "lightColor", 1.0f);
-        }
-      }
-      else{
-        if (lampAmbient==0) {
-          if (mainAmbient==0) {
-            shader.setFloat(gl, "lightColor", 0f);
-          }
-          else {
-            shader.setFloat(gl, "lightColor", 0.2f);
-          }
-        }
-        else {
-          shader.setFloat(gl, "lightColor", 1.0f);
-        }
-      }
-      model = new Mat4(1);
-      model = Mat4.multiply(Mat4Transform.scale(1f,1f,1f), model);
-      if (i==2 || i==3) {
-        model = Mat4.multiply(Mat4Transform.scale(2f,2f,2f), model);
-      }
-      model = Mat4.multiply(Mat4Transform.translate(pointLightPositions[i]), model);
-      model = Mat4.multiply(Mat4Transform.translate(0,0.5f,0), model);
-
-      mvpMatrix = Mat4.multiply(perspective, Mat4.multiply(camera.getViewMatrix(), model));
-
-      shader.use(gl);
-      shader.setFloatArray(gl, "mvpMatrix", mvpMatrix.toFloatArrayForGLSL());
-
-      gl.glDrawElements(GL.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, 0);
+      setLightColor(gl, i);
+      drawLight(gl, i);
     }
 
     gl.glBindVertexArray(0);

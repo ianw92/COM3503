@@ -15,16 +15,7 @@ public class Sphere extends Mesh {
     super.indices = this.indices;
     this.textureId1 = textureId1;
     this.textureId2 = textureId2;
-    material.setAmbient(1.0f, 0.5f, 0.31f, "main");
-    material.setDiffuse(1.0f, 0.5f, 0.31f, "main");
-    material.setSpecular(0.5f, 0.5f, 0.5f, "main");
-    material.setAmbient(1.0f, 0.5f, 0.31f, "point");
-    material.setDiffuse(1.0f, 0.5f, 0.31f, "point");
-    material.setSpecular(0.5f, 0.5f, 0.5f, "point");
-    material.setAmbient(1.0f, 0.5f, 0.31f, "spot");
-    material.setDiffuse(1.0f, 0.5f, 0.31f, "spot");
-    material.setSpecular(0.5f, 0.5f, 0.5f, "spot");
-    material.setShininess(32.0f);
+    super.setupDefaultMaterialLighting();
     shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
     fillBuffers(gl);
   }
@@ -60,7 +51,6 @@ public class Sphere extends Mesh {
    */
   // anticlockwise/counterclockwise ordering
 
-
   private float[] vertices;
   private int[] indices;
 
@@ -88,9 +78,6 @@ public class Sphere extends Mesh {
         vertices[j*XLONG*step+i*step+7] = (float)(j)/(float)(YLAT-1);
       }
     }
-    //for (int i=0; i<vertices.length; i+=step) {
-    //  System.out.println(vertices[i]+", "+vertices[i+1]+", "+vertices[i+2]);
-    //}
 
     indices = new int[(XLONG-1)*(YLAT-1)*6];
     for (int j = 0; j<YLAT-1; ++j) {
@@ -103,10 +90,6 @@ public class Sphere extends Mesh {
         indices[j*(XLONG-1)*6+i*6+5] = (j+1)*XLONG+i;
       }
     }
-    //for (int i=0; i<indices.length; i+=3) {
-    //  System.out.println(indices[i]+", "+indices[i+1]+", "+indices[i+2]);
-    //}
-
   }
 
 }

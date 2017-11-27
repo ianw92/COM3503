@@ -88,7 +88,6 @@ public class Arty_GLEventListener implements GLEventListener {
    light.setLightLevel(0.1f,0.4f,0.8f, "point");
   }
 
-
   // Hand Interaction
   private boolean animation = false;
   private double savedTime = 0;
@@ -117,7 +116,6 @@ public class Arty_GLEventListener implements GLEventListener {
     stopAnimation();
     armStructure.stopAnimation(true);
     savedTime = -1;
-    System.out.println(light.getSpotLightPosition());
   }
 
   public void makeI() {
@@ -126,7 +124,6 @@ public class Arty_GLEventListener implements GLEventListener {
       armStructure.stopAnimation(true);
       savedTime = -1;
     }
-    System.out.println(light.getSpotLightPosition());
   }
 
   public void makeA() {
@@ -135,7 +132,6 @@ public class Arty_GLEventListener implements GLEventListener {
       armStructure.stopAnimation(true);
       savedTime = -1;
     }
-    System.out.println(light.getSpotLightPosition());
   }
 
   public void makeN() {
@@ -144,7 +140,6 @@ public class Arty_GLEventListener implements GLEventListener {
       armStructure.stopAnimation(true);
       savedTime = -1;
     }
-    System.out.println(light.getSpotLightPosition());
   }
 
   public void makeVulcan() {
@@ -153,7 +148,6 @@ public class Arty_GLEventListener implements GLEventListener {
       armStructure.stopAnimation(true);
       savedTime = -1;
     }
-    System.out.println(light.getSpotLightPosition());
   }
 
   public void animate(double startTime) {
@@ -280,25 +274,23 @@ public class Arty_GLEventListener implements GLEventListener {
     lamp1.setSize(3,9,3);
     lamp1.setPosition(-18,0,-18);
     lamp1.initialise(gl);
-    light.setPointLightPosition(new Vec3(-18,10,-18), 2);
+    light.setPointLightPosition(lamp1.getLightPosition(), 2);
 
     lamp2 = new Lamp(cubeLampFittings, sphereLampFittings);
     lamp2.setSize(5,11,5);
     lamp2.setPosition(15,0,15);
     lamp2.initialise(gl);
-    light.setPointLightPosition(new Vec3(15,12,15), 3);
+    light.setPointLightPosition(lamp2.getLightPosition(), 3);
 
     wallLamp1 = new WallLamp(cubeLampFittings, sphereLampFittings);
-    wallLamp1.setSize(3,9,3);
     wallLamp1.setPosition(-20,20,15);
     wallLamp1.initialise(gl);
-    light.setPointLightPosition(new Vec3((-20f+3f+0.5f+0.25f),(20f+3f+0.25f),15), 4);
+    light.setPointLightPosition(new Vec3(wallLamp1.getLightPosition()), 4);
 
     wallLamp2 = new WallLamp(cubeLampFittings, sphereLampFittings);
-    wallLamp2.setSize(3,9,3);
     wallLamp2.setPosition(20,18,-3);
     wallLamp2.initialise(gl);
-    light.setPointLightPosition(new Vec3((20f-3f-0.5f-0.25f),(18f+3f+0.25f),-3), 5);
+    light.setPointLightPosition(new Vec3(wallLamp2.getLightPosition()), 5);
 
     room = new Room(floor, wall1, wall2, wall3, wall4_bottom, wall4_top, wall4_left, wall4_right, ceiling, roomDimensions);
     outsideScene = new OutsideScene(outsideSceneBillboard, grassBillboard, skyBillboard, roomDimensions);

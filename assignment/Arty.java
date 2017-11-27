@@ -55,12 +55,6 @@ public class Arty extends JFrame implements ActionListener {
       b = new JButton("lamps on");
       b.addActionListener(this);
       p.add(b);
-      b = new JButton("camera X");
-      b.addActionListener(this);
-      p.add(b);
-      b = new JButton("camera Z");
-      b.addActionListener(this);
-      p.add(b);
       b = new JButton("reset hand");
       b.addActionListener(this);
       p.add(b);
@@ -108,14 +102,6 @@ public class Arty extends JFrame implements ActionListener {
     }
     else if (e.getActionCommand().equalsIgnoreCase("lamps off")) {
       glEventListener.lampsOff();
-    }
-    else if (e.getActionCommand().equalsIgnoreCase("camera X")) {
-      camera.setCamera(Camera.CameraType.X);
-      canvas.requestFocusInWindow();
-    }
-    else if (e.getActionCommand().equalsIgnoreCase("camera Z")) {
-      camera.setCamera(Camera.CameraType.Z);
-      canvas.requestFocusInWindow();
     }
     else if (e.getActionCommand().equalsIgnoreCase("start")) {
       glEventListener.startAnimation();

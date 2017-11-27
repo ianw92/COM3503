@@ -14,13 +14,16 @@ public class WallLamp {
     this.sphere = sphere;
   }
 
-  private float xPos = 0;
-  private float yPos = 0;
-  private float zPos = 0;
-  private float width = 1;
-  private float height = 1;
-  private float depth = 1;
+  private float xPos, yPos, zPos;
+
+  // Measurements
+  private float baseWidth = 1.5f;
   private float baseHeight = 0.5f;
+  private float baseDepth = baseWidth;
+  private float columnWidth = 0.5f;
+  private float columnHeight = 3f;
+  private float columnDepth = columnWidth;
+  private float connectorDiameter = columnWidth;
 
   // ***************************************************
   /* INTERACTION
@@ -28,16 +31,23 @@ public class WallLamp {
    *
    */
 
-  public void setSize(float width, float height, float depth) {
-   this.width = width;
-   this.height = height;
-   this.depth = depth;
-  }
-
   public void setPosition(float x, float y, float z) {
    this.xPos = x;
    this.yPos = y;
    this.zPos = z;
+  }
+
+  public Vec3 getLightPosition() {
+    float x;
+    float distanceFromWall = baseHeight+columnHeight+connectorDiameter*0.5f;
+    if (xPos < 0) {
+      x = xPos+distanceFromWall;
+    }
+    else {
+      x = xPos-distanceFromWall;
+    }
+    float y = yPos+3f+0.25f;
+    return new Vec3(x, y, zPos);
   }
 
   // ***************************************************
@@ -51,6 +61,7 @@ public class WallLamp {
 
     wallLamp = new NameNode("wallLamp root");
 
+    // Set transform node as if xPos < 0, change it if xPos > 0
     TransformNode wallLampTranslate = new TransformNode("wallLamp translate", Mat4.multiply(
                       Mat4Transform.translate(xPos, yPos, zPos), Mat4Transform.rotateAroundZ(-90)));
     if (xPos > 0) {
@@ -58,44 +69,44 @@ public class WallLamp {
                         Mat4Transform.translate(xPos, yPos, zPos), Mat4Transform.rotateAroundZ(90)));
     }
 
-    NameNode wallLampBase = new NameNode("wallLamp base");
-    Mat4 m = Mat4Transform.scale(1.5f,baseHeight,1.5f);
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
-    TransformNode wallLampBaseTransform = new TransformNode("wallLamp base transform", m);
-    MeshNode wallLampBaseShape = new MeshNode("Cube(wallLamp base)", cube);
+      NameNode wallLampBase = new NameNode("wallLamp base");
+      Mat4 m = Mat4Transform.scale(baseWidth,baseHeight,baseDepth);
+      m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
+      TransformNode wallLampBaseTransform = new TransformNode("wallLamp base transform", m);
+      MeshNode wallLampBaseShape = new MeshNode("Cube(wallLamp base)", cube);
 
-    NameNode wallLampColumn = new NameNode("wallLamp column");
-    TransformNode wallLampColumnTranslate = new TransformNode("wallLampColumn translate",
-                                                     Mat4Transform.translate(0,baseHeight,0));
-    m = new Mat4(1);
-    m = Mat4Transform.scale(0.5f,3f,0.5f);
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
-    TransformNode wallLampColumnScale = new TransformNode("wallLamp column transform", m);
-    MeshNode wallLampColumnShape = new MeshNode("Cube(wallLamp column)", cube);
+        NameNode wallLampColumn = new NameNode("wallLamp column");
+        TransformNode wallLampColumnTranslate = new TransformNode("wallLampColumn translate",
+                                                         Mat4Transform.translate(0,baseHeight,0));
+        m = new Mat4(1);
+        m = Mat4Transform.scale(columnWidth,columnHeight,columnDepth);
+        m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
+        TransformNode wallLampColumnScale = new TransformNode("wallLamp column transform", m);
+        MeshNode wallLampColumnShape = new MeshNode("Cube(wallLamp column)", cube);
 
-    NameNode wallLampConnector = new NameNode("wallLamp connector");
-    TransformNode wallLampConnectorTranslate = new TransformNode("wallLampConnector translate",
-                                                      Mat4Transform.translate(0,3.25f,0));
-    TransformNode wallLampConnectorTranslateLocal = new TransformNode("wallLampConnector translate local",
-                                                      Mat4Transform.rotateAroundZ(90));
-    if (xPos > 0) {
-      wallLampConnectorTranslateLocal = new TransformNode("wallLampConnector translate local",
-                                                        Mat4Transform.rotateAroundZ(-90));
-    }
-    m = new Mat4(1);
-    m = Mat4Transform.scale(0.5f,0.5f,0.5f);
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0,0));
-    TransformNode wallLampConnectorScale = new TransformNode("wallLamp connector transform", m);
-    MeshNode wallLampConnectorShape = new MeshNode("Sphere(wallLamp connector)", sphere);
+          NameNode wallLampConnector = new NameNode("wallLamp connector");
+          TransformNode wallLampConnectorTranslate = new TransformNode("wallLampConnector translate",
+                                                            Mat4Transform.translate(0,columnHeight+connectorDiameter*0.5f,0));
+          // Set transform node as if xPos < 0, change it if xPos > 0
+          TransformNode wallLampConnectorTranslateLocal = new TransformNode("wallLampConnector translate local",
+                                                            Mat4Transform.rotateAroundZ(90));
+          if (xPos > 0) {
+            wallLampConnectorTranslateLocal = new TransformNode("wallLampConnector translate local",
+                                                              Mat4Transform.rotateAroundZ(-90));
+          }
+          m = new Mat4(1);
+          m = Mat4Transform.scale(connectorDiameter,connectorDiameter,connectorDiameter);
+          TransformNode wallLampConnectorScale = new TransformNode("wallLamp connector transform", m);
+          MeshNode wallLampConnectorShape = new MeshNode("Sphere(wallLamp connector)", sphere);
 
-    NameNode wallLampColumn2 = new NameNode("wallLamp column2");
-    TransformNode wallLampColumn2Translate = new TransformNode("wallLampColumn2 translate",
-                                                    Mat4Transform.translate(0,0.25f,0));
-    m = new Mat4(1);
-    m = Mat4Transform.scale(0.5f,3f,0.5f);
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
-    TransformNode wallLampColumn2Scale = new TransformNode("wallLamp column2 transform", m);
-    MeshNode wallLampColumn2Shape = new MeshNode("Cube(wallLamp column2)", cube);
+            NameNode wallLampColumn2 = new NameNode("wallLamp column2");
+            TransformNode wallLampColumn2Translate = new TransformNode("wallLampColumn2 translate",
+                                                            Mat4Transform.translate(0,connectorDiameter*0.5f,0));
+            m = new Mat4(1);
+            m = Mat4Transform.scale(columnWidth,columnHeight,columnDepth);
+            m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
+            TransformNode wallLampColumn2Scale = new TransformNode("wallLamp column2 transform", m);
+            MeshNode wallLampColumn2Shape = new MeshNode("Cube(wallLamp column2)", cube);
 
     wallLamp.addChild(wallLampTranslate);
       wallLampTranslate.addChild(wallLampBase);
@@ -117,7 +128,6 @@ public class WallLamp {
 
     wallLamp.update();
     // wallLamp.print(0, false);
-
   }
 
   public void render(GL3 gl) {

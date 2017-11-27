@@ -14,12 +14,7 @@ public class Lamp {
     this.sphere = sphere;
   }
 
-  private float xPos = 0;
-  private float yPos = 0;
-  private float zPos = 0;
-  private float width = 1;
-  private float height = 1;
-  private float depth = 1;
+  private float xPos, yPos, zPos, width, height, depth;
   private float baseHeight = 1f;
 
   // ***************************************************
@@ -38,6 +33,11 @@ public class Lamp {
    this.xPos = x;
    this.yPos = y;
    this.zPos = z;
+  }
+
+  public Vec3 getLightPosition() {
+    float y = height+baseHeight;
+    return new Vec3(xPos, y, zPos);
   }
 
   // ***************************************************

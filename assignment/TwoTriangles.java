@@ -12,40 +12,19 @@ public class TwoTriangles extends Mesh {
     super.vertices = this.vertices;
     super.indices = this.indices;
     this.textureId = textureId;
-    material.setAmbient(1.0f, 0.5f, 0.31f, "main");
-    material.setDiffuse(1.0f, 0.5f, 0.31f, "main");
-    material.setSpecular(0.5f, 0.5f, 0.5f, "main");
-    material.setAmbient(1.0f, 0.5f, 0.31f, "point");
-    material.setDiffuse(1.0f, 0.5f, 0.31f, "point");
-    material.setSpecular(0.5f, 0.5f, 0.5f, "point");
-    material.setAmbient(1.0f, 0.5f, 0.31f, "spot");
-    material.setDiffuse(1.0f, 0.5f, 0.31f, "spot");
-    material.setSpecular(0.5f, 0.5f, 0.5f, "spot");
-    material.setShininess(32.0f);
+    super.setupDefaultMaterialLighting();
     shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
     fillBuffers(gl);
   }
 
+  // Constructor used for window wall where different texture coords are required
   public TwoTriangles(GL3 gl, int[] textureId, float[] textureCoords) {
     super(gl);
     setTexCoords(textureCoords);
-    System.out.println();
-    for (int i=0; i<32; i++) {
-      System.out.println(vertices[i]);
-    }
     super.vertices = this.vertices;
     super.indices = this.indices;
     this.textureId = textureId;
-    material.setAmbient(1.0f, 0.5f, 0.31f, "main");
-    material.setDiffuse(1.0f, 0.5f, 0.31f, "main");
-    material.setSpecular(0.5f, 0.5f, 0.5f, "main");
-    material.setAmbient(1.0f, 0.5f, 0.31f, "point");
-    material.setDiffuse(1.0f, 0.5f, 0.31f, "point");
-    material.setSpecular(0.5f, 0.5f, 0.5f, "point");
-    material.setAmbient(1.0f, 0.5f, 0.31f, "spot");
-    material.setDiffuse(1.0f, 0.5f, 0.31f, "spot");
-    material.setSpecular(0.5f, 0.5f, 0.5f, "spot");
-    material.setShininess(32.0f);
+    super.setupDefaultMaterialLighting();
     shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
     fillBuffers(gl);
   }
@@ -85,6 +64,7 @@ public class TwoTriangles extends Mesh {
   /* THE DATA
    */
   // anticlockwise/counterclockwise ordering
+
   private float[] vertices = {      // position, colour, tex coords
     -0.5f, 0.0f, -0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f,  // top left
     -0.5f, 0.0f,  0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 0.0f,  // bottom left

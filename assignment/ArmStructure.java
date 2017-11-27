@@ -42,7 +42,6 @@ public class ArmStructure {
      littleFingerSegment1TranslateLocal.setTransform(Mat4Transform.rotateAroundZ(0));
      littleFingerSegment2TranslateLocal.setTransform(Mat4Transform.rotateAroundZ(0));
      littleFingerSegment3TranslateLocal.setTransform(Mat4Transform.rotateAroundZ(0));
-    //  firstFingerSegment1TranslateLocal.print(4, true);
 
      armStructure.update();
 
@@ -76,7 +75,6 @@ public class ArmStructure {
      littleFingerSegment2TranslateLocal.setTransform(Mat4Transform.rotateAroundX(0));
      littleFingerSegment3TranslateLocal.setTransform(Mat4Transform.rotateAroundX(0));
      armStructure.update();
-    //  firstFingerSegment1TranslateLocal.print(4, true);
 
      animatedI = true;
      animatedA = false;
@@ -107,7 +105,6 @@ public class ArmStructure {
      littleFingerSegment2TranslateLocal.setTransform(Mat4Transform.rotateAroundX(90));
      littleFingerSegment3TranslateLocal.setTransform(Mat4Transform.rotateAroundX(45));
      armStructure.update();
-    //  firstFingerSegment1TranslateLocal.print(4, true);
 
      animatedI = true;
      animatedA = true;
@@ -138,7 +135,6 @@ public class ArmStructure {
      littleFingerSegment2TranslateLocal.setTransform(Mat4Transform.rotateAroundX(90));
      littleFingerSegment3TranslateLocal.setTransform(Mat4Transform.rotateAroundX(45));
      armStructure.update();
-    //  firstFingerSegment1TranslateLocal.print(4, true);
 
      animatedI = true;
      animatedA = true;
@@ -169,7 +165,6 @@ public class ArmStructure {
     littleFingerSegment2TranslateLocal.setTransform(Mat4Transform.rotateAroundX(0));
     littleFingerSegment3TranslateLocal.setTransform(Mat4Transform.rotateAroundX(0));
     armStructure.update();
-    // firstFingerSegment1TranslateLocal.print(4, true);
 
     animatedI = true;
     animatedA = true;
@@ -235,7 +230,6 @@ public class ArmStructure {
       }
     }
     armStructure.update();
-    System.out.println(animationTime);
   }
 
   public void stopAnimation(boolean resetStop) {
@@ -334,7 +328,6 @@ public class ArmStructure {
     firstFingerSegment3TranslateLocal.setTransform(Mat4Transform.rotateAroundX(rotateFirstAndMiddleFS3Angle));
     middleFingerSegment3TranslateLocal.setTransform(Mat4Transform.rotateAroundX(rotateFirstAndMiddleFS3Angle));
 
-
     float rotateRingAndLittleFS1XAngle = 90f-90f*(float)Math.sin(time);
     float rotateRingAndLittleFS1ZAngle = 20f*(float)Math.sin(time);
     ringFingerSegment1TranslateLocal.setTransform(Mat4.multiply(
@@ -372,143 +365,119 @@ public class ArmStructure {
   public Vec3 getRingPosition() {
     // if time = 0 then the hand is in a static position (i.e. 'rest', 'i', 'a', 'n', or 'vulcan')
     float x=0, y=0, z=0;
+    Vec3 position = new Vec3(0,0,0);
     if (!animating && !midAnimation) {
       if (!animatedI) {
         // ring not moved
-        x = 1.13f;
-        y = 10.92f;
-        z = -0.3f;
+        position = new Vec3(1.13f, 10.92f, -0.3f);
       }
       else if (!animatedA) {
         // ring at I position
-        x = 1.13f;
-        y = 10.8f;
-        z = 0.42f;
+        position = new Vec3(1.13f, 10.8f, 0.42f);
       }
       else if (!animatedN) {
         // ring at A position
-        x = 1.13f;
-        y = 10.8f;
-        z = 0.42f;
+        position = new Vec3(1.13f, 10.8f, 0.42f);
       }
       else if (!animatedVulcan) {
         // ring at N position
-        x = 1.13f;
-        y = 11.01f;
-        z = 0.09f;
+        position = new Vec3(1.13f, 11.01f, 0.09f);
       }
       else {
         // ring at vulcan position
-        x = 1.27f;
-        y = 10.9f;
-        z = -0.3f;
+        position = new Vec3(1.27f, 10.9f, -0.3f);
       }
     }
+    // Hand is at some location mid animation
     else {
       //need to work out where in animation the ring is
       if (!animatedI) {
         // somewhere between rest and 'I'
-        x = 1.13f;
         y = 10.92f-0.12f*(float)Math.sin(elapsedTime - animationTime);
         z = -0.3f+0.72f*(float)Math.sin(elapsedTime - animationTime);
+        position = new Vec3(1.13f, y, z);
       }
       else if (!animatedA) {
         // somewhere between 'I' and 'A'
-        x = 1.13f;
-        y = 10.8f;
-        z = 0.42f;
+        position = new Vec3(1.13f, 10.8f, 0.42f);
       }
       else if (!animatedN) {
         // somewhere between 'A' and 'N'
-        x = 1.13f;
         y = 10.8f+0.21f*(float)Math.sin(elapsedTime - animationTime);
         z = 0.42f-0.23f*(float)Math.sin(elapsedTime - animationTime);
+        position = new Vec3(1.13f, y, z);
       }
       else if (!animatedVulcan) {
         // somewhere between 'N' and 'Vulcan'
         x = 1.13f+0.14f*(float)Math.sin(elapsedTime - animationTime);
         y = 11.01f-0.11f*(float)Math.sin(elapsedTime - animationTime);
         z = 0.09f-0.39f*(float)Math.sin(elapsedTime - animationTime);
+        position = new Vec3(x, y, z);
       }
       else {
         // somewhere between 'Vulcan' and 'rest'
         x = 1.27f-0.14f*(float)Math.sin(elapsedTime - animationTime);
         y = 10.9f+0.02f*(float)Math.sin(elapsedTime - animationTime);
-        z = -0.3f;
+        position = new Vec3(x, y, -0.3f);
       }
     }
-    return new Vec3(x,y,z);
+    return position;
   }
 
   public Vec3 getRingDirection() {
     // if time = 0 then the hand is in a static position (i.e. 'rest', 'i', 'a', 'n', or 'vulcan')
     float x=0, y=0, z=0;
+    Vec3 position = new Vec3(0,0,0);
     if (!animating && !midAnimation) {
       if (!animatedI) {
         // ring not moved
-        x = 0f;
-        y = 0f;
-        z = -1f;
+        position = new Vec3(0f, 0f, -1f);
       }
       else if (!animatedA) {
         // ring at I position
-        x = 0f;
-        y = 1f;
-        z = 0f;
+        position = new Vec3(0f, 1f, 0f);
       }
       else if (!animatedN) {
         // ring at A position
-        x = 0f;
-        y = 1f;
-        z = 0f;
+        position = new Vec3(0f, 1f, 0f);
       }
       else if (!animatedVulcan) {
         // ring at N position
-        x = 0f;
-        y = 1f;
-        z = -1f;
+        position = new Vec3(0f, 1f, -1f);
       }
       else {
         // ring at vulcan position
-        x = 0f;
-        y = 0f;
-        z = -1f;
+        position = new Vec3(0f, 0f, -1f);
       }
     }
     else {
       //need to work out where in animation the ring is
       if (!animatedI) {
         // somewhere between rest and 'I'
-        x = 0f;
         y = (float)Math.sin(elapsedTime - animationTime);
         z = -1f + (float)Math.sin(elapsedTime - animationTime);
+        position = new Vec3(0f, y, z);
       }
       else if (!animatedA) {
         // somewhere between 'I' and 'A'
-        x = 0f;
-        y = 1f;
-        z = 0f;
+        position = new Vec3(0f, 1f, 0f);
       }
       else if (!animatedN) {
         // somewhere between 'A' and 'N'
-        x = 0f;
-        y = 1f;
         z = 0f-(float)Math.sin(elapsedTime - animationTime);
+        position = new Vec3(0f, 1f, z);
       }
       else if (!animatedVulcan) {
         // somewhere between 'N' and 'Vulcan'
-        x = 0f;
         y = 1f-(float)Math.sin(elapsedTime - animationTime);
-        z = -1f;
+        position = new Vec3(0f, y, -1f);
       }
       else {
         // somewhere between 'Vulcan' and 'rest'
-        x = 0f;
-        y = 0f;
-        z = -1f;
+        position = new Vec3(0f, 0f, -1f);
       }
     }
-    return new Vec3(x,y,z);
+    return position;
   }
 
   // ***************************************************
@@ -518,6 +487,7 @@ public class ArmStructure {
   private Mesh cube, cubeRing, sphere, sphereGemstone;
   private SGNode armStructure;
 
+  // Set up transformation nodes required for animation
   private TransformNode armStructureMoveTranslate, thumbSegment1TranslateLocal;
 
   private TransformNode thumbSegment2TranslateLocal = new TransformNode("thumb segment 2 translate local", Mat4Transform.rotateAroundZ(0));
@@ -540,19 +510,19 @@ public class ArmStructure {
 
   // armStructure measurements
   private float armPlinthHeight = 7.5f;
-  private float armPlinthWidth = 2;
+  private float armPlinthWidth = 2f;
   private float armPlinthDepth = 1.5f;
-  private float palmHeight = 3;
-  private float palmWidth = 3;
+  private float palmHeight = 3f;
+  private float palmWidth = 3f;
   private float palmDepth = 0.5f;
-  private float fingerWidth = palmWidth/5;
+  private float fingerWidth = palmWidth/5f;
   private float thumbWidth = fingerWidth;
   private float fingerDepth = palmDepth;
   private float middleFingerHeight = palmHeight;
-  private float thumbHeight = 12f/11f*middleFingerHeight;
-  private float firstFingerHeight = 9.5f/12*middleFingerHeight;
-  private float ringFingerHeight = 10.5f/12*middleFingerHeight;
-  private float littleFingerHeight = 2f/3f*middleFingerHeight;
+  private float thumbHeight = middleFingerHeight*12f/11f;
+  private float firstFingerHeight = middleFingerHeight*9.5f/12f;
+  private float ringFingerHeight = middleFingerHeight*10.5f/12f;
+  private float littleFingerHeight = middleFingerHeight*2f/3f;
   private float gemWidth = fingerWidth*4f/9f;
 
   public void initialise(GL3 gl) {
@@ -569,172 +539,172 @@ public class ArmStructure {
     TransformNode armPlinthTransform = new TransformNode("arm transform", m);
     MeshNode armPlinthShape = new MeshNode("Sphere(armPlinth)", sphere);
 
-    NameNode palm = new NameNode("palm");
-    TransformNode palmTranslate = new TransformNode("palm translate",
-                                                      Mat4Transform.translate(0,armPlinthHeight,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(palmWidth,palmHeight,palmDepth)); // Size
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode palmScale = new TransformNode("palm transform", m);
-    MeshNode palmShape = new MeshNode("Cube(palm)", cube);
+      NameNode palm = new NameNode("palm");
+      TransformNode palmTranslate = new TransformNode("palm translate",
+                                                        Mat4Transform.translate(0,armPlinthHeight,0));
+      m = new Mat4(1);
+      m = Mat4.multiply(m, Mat4Transform.scale(palmWidth,palmHeight,palmDepth)); // Size
+      m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+      TransformNode palmScale = new TransformNode("palm transform", m);
+      MeshNode palmShape = new MeshNode("Cube(palm)", cube);
 
-    NameNode thumbSegment1 = new NameNode("thumb segment 1");
-    TransformNode thumbSegment1TranslateOntoPalm = new TransformNode("thumb segment 1 translate",
-                                                              Mat4Transform.translate(palmWidth*3/8,0,palmDepth/2));
-    thumbSegment1TranslateLocal = new TransformNode("thumb segegment 1 translate local",
-                                                              Mat4Transform.rotateAroundZ(-35));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.rotateAroundY(15));
-    m = Mat4.multiply(m, Mat4Transform.scale(thumbWidth,thumbHeight/2,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode thumbSegment1Scale = new TransformNode("thumb segment 1 transform", m);
-    MeshNode thumbSegment1Shape = new MeshNode("Sphere(thumb segment 1)", sphere);
+        NameNode thumbSegment1 = new NameNode("thumb segment 1");
+        TransformNode thumbSegment1TranslateOntoPalm = new TransformNode("thumb segment 1 translate",
+                                                                  Mat4Transform.translate(palmWidth*3/8,0,palmDepth/2));
+        thumbSegment1TranslateLocal = new TransformNode("thumb segegment 1 translate local",
+                                                                  Mat4Transform.rotateAroundZ(-35));
+        m = new Mat4(1);
+        m = Mat4.multiply(m, Mat4Transform.rotateAroundY(15));
+        m = Mat4.multiply(m, Mat4Transform.scale(thumbWidth,thumbHeight/2,fingerDepth));
+        m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+        TransformNode thumbSegment1Scale = new TransformNode("thumb segment 1 transform", m);
+        MeshNode thumbSegment1Shape = new MeshNode("Sphere(thumb segment 1)", sphere);
 
-    NameNode thumbSegment2 = new NameNode("thumb segment 2");
-    TransformNode thumbSegment2Translate = new TransformNode("thumb segment 2 translate",
-                                                              Mat4Transform.translate(0,thumbHeight/2,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.rotateAroundY(15));
-    m = Mat4.multiply(m, Mat4Transform.scale(thumbWidth,thumbHeight/3,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode thumbSegment2Scale = new TransformNode("thumb segment 2 transform", m);
-    MeshNode thumbSegment2Shape = new MeshNode("Sphere(thumb segment 2)", sphere);
+          NameNode thumbSegment2 = new NameNode("thumb segment 2");
+          TransformNode thumbSegment2Translate = new TransformNode("thumb segment 2 translate",
+                                                                    Mat4Transform.translate(0,thumbHeight/2,0));
+          m = new Mat4(1);
+          m = Mat4.multiply(m, Mat4Transform.rotateAroundY(15));
+          m = Mat4.multiply(m, Mat4Transform.scale(thumbWidth,thumbHeight/3,fingerDepth));
+          m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+          TransformNode thumbSegment2Scale = new TransformNode("thumb segment 2 transform", m);
+          MeshNode thumbSegment2Shape = new MeshNode("Sphere(thumb segment 2)", sphere);
 
-    NameNode thumbSegment3 = new NameNode("thumb segment 3");
-    TransformNode thumbSegment3Translate = new TransformNode("thumb segment 3 translate",
-                                                              Mat4Transform.translate(0,thumbHeight/3,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.rotateAroundY(15));
-    m = Mat4.multiply(m, Mat4Transform.scale(thumbWidth,thumbHeight/3,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode thumbSegment3Scale = new TransformNode("thumb segment 3 transform", m);
-    MeshNode thumbSegment3Shape = new MeshNode("Sphere(thumb segment 3)", sphere);
+            NameNode thumbSegment3 = new NameNode("thumb segment 3");
+            TransformNode thumbSegment3Translate = new TransformNode("thumb segment 3 translate",
+                                                                      Mat4Transform.translate(0,thumbHeight/3,0));
+            m = new Mat4(1);
+            m = Mat4.multiply(m, Mat4Transform.rotateAroundY(15));
+            m = Mat4.multiply(m, Mat4Transform.scale(thumbWidth,thumbHeight/3,fingerDepth));
+            m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+            TransformNode thumbSegment3Scale = new TransformNode("thumb segment 3 transform", m);
+            MeshNode thumbSegment3Shape = new MeshNode("Sphere(thumb segment 3)", sphere);
 
-    NameNode firstFingerSegment1 = new NameNode("first finger segment 1");
-    TransformNode firstFingerSegment1TranslateOntoPalm = new TransformNode("first finger segment 1 translate onto palm",
-                                                                    Mat4Transform.translate((palmWidth*3/8),palmHeight,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,firstFingerHeight/3,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode firstFingerSegment1Scale = new TransformNode("first finger segment 1 transform", m);
-    MeshNode firstFingerSegment1Shape = new MeshNode("Sphere(first finger segment 1)", sphere);
+        NameNode firstFingerSegment1 = new NameNode("first finger segment 1");
+        TransformNode firstFingerSegment1TranslateOntoPalm = new TransformNode("first finger segment 1 translate onto palm",
+                                                                        Mat4Transform.translate((palmWidth*3/8),palmHeight,0));
+        m = new Mat4(1);
+        m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,firstFingerHeight/3,fingerDepth));
+        m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+        TransformNode firstFingerSegment1Scale = new TransformNode("first finger segment 1 transform", m);
+        MeshNode firstFingerSegment1Shape = new MeshNode("Sphere(first finger segment 1)", sphere);
 
-    NameNode ringBand = new NameNode("ringBand");
-    TransformNode ringBandTranslate = new TransformNode("ring band translate",
-                                                          Mat4Transform.translate(0,firstFingerHeight/9,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth+0.1f,firstFingerHeight/8,fingerDepth+0.1f));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode ringBandScale = new TransformNode("ring band transform", m);
-    MeshNode ringBandShape = new MeshNode("Cube(ring band)", cubeRing);
+          NameNode ringBand = new NameNode("ringBand");
+          TransformNode ringBandTranslate = new TransformNode("ring band translate",
+                                                                Mat4Transform.translate(0,firstFingerHeight/9,0));
+          m = new Mat4(1);
+          m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth+0.1f,firstFingerHeight/8,fingerDepth+0.1f));
+          m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+          TransformNode ringBandScale = new TransformNode("ring band transform", m);
+          MeshNode ringBandShape = new MeshNode("Cube(ring band)", cubeRing);
 
-    NameNode ringGem = new NameNode("ringGem");
-    TransformNode ringGemTranslate = new TransformNode("ring gem translate",
-                                                          Mat4Transform.translate(0,firstFingerHeight/100,-fingerWidth/2));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(gemWidth,gemWidth,gemWidth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode ringGemScale = new TransformNode("ring gem transform", m);
-    MeshNode ringGemShape = new MeshNode("Sphere(ring gem)", sphereGemstone);
+            NameNode ringGem = new NameNode("ringGem");
+            TransformNode ringGemTranslate = new TransformNode("ring gem translate",
+                                                                  Mat4Transform.translate(0,firstFingerHeight/100,-fingerWidth/2));
+            m = new Mat4(1);
+            m = Mat4.multiply(m, Mat4Transform.scale(gemWidth,gemWidth,gemWidth));
+            m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+            TransformNode ringGemScale = new TransformNode("ring gem transform", m);
+            MeshNode ringGemShape = new MeshNode("Sphere(ring gem)", sphereGemstone);
 
-    NameNode firstFingerSegment2 = new NameNode("first finger segment 2");
-    TransformNode firstFingerSegment2Translate = new TransformNode("first finger segment 2 translate",
-                                                                    Mat4Transform.translate(0,firstFingerHeight/3,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,firstFingerHeight/3,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode firstFingerSegment2Scale = new TransformNode("first finger segment 2 transform", m);
-    MeshNode firstFingerSegment2Shape = new MeshNode("Sphere(first finger segment 2)", sphere);
+          NameNode firstFingerSegment2 = new NameNode("first finger segment 2");
+          TransformNode firstFingerSegment2Translate = new TransformNode("first finger segment 2 translate",
+                                                                          Mat4Transform.translate(0,firstFingerHeight/3,0));
+          m = new Mat4(1);
+          m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,firstFingerHeight/3,fingerDepth));
+          m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+          TransformNode firstFingerSegment2Scale = new TransformNode("first finger segment 2 transform", m);
+          MeshNode firstFingerSegment2Shape = new MeshNode("Sphere(first finger segment 2)", sphere);
 
-    NameNode firstFingerSegment3 = new NameNode("first finger segment 3");
-    TransformNode firstFingerSegment3Translate = new TransformNode("first finger segment 3 translate",
-                                                                    Mat4Transform.translate(0,firstFingerHeight/3,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,firstFingerHeight/3,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode firstFingerSegment3Scale = new TransformNode("first finger segment 3 transform", m);
-    MeshNode firstFingerSegment3Shape = new MeshNode("Sphere(first finger segment 3)", sphere);
+            NameNode firstFingerSegment3 = new NameNode("first finger segment 3");
+            TransformNode firstFingerSegment3Translate = new TransformNode("first finger segment 3 translate",
+                                                                            Mat4Transform.translate(0,firstFingerHeight/3,0));
+            m = new Mat4(1);
+            m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,firstFingerHeight/3,fingerDepth));
+            m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+            TransformNode firstFingerSegment3Scale = new TransformNode("first finger segment 3 transform", m);
+            MeshNode firstFingerSegment3Shape = new MeshNode("Sphere(first finger segment 3)", sphere);
 
-    NameNode middleFingerSegment1 = new NameNode("middle finger segment 1");
-    TransformNode middleFingerSegment1TranslateOntoPalm = new TransformNode("middle finger segment 1 translate",
-                                                                    Mat4Transform.translate((palmWidth/8),palmHeight,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,middleFingerHeight/3,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode middleFingerSegment1Scale = new TransformNode("middle finger segment 1 transform", m);
-    MeshNode middleFingerSegment1Shape = new MeshNode("Sphere(middle finger segment 1)", sphere);
+        NameNode middleFingerSegment1 = new NameNode("middle finger segment 1");
+        TransformNode middleFingerSegment1TranslateOntoPalm = new TransformNode("middle finger segment 1 translate",
+                                                                        Mat4Transform.translate((palmWidth/8),palmHeight,0));
+        m = new Mat4(1);
+        m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,middleFingerHeight/3,fingerDepth));
+        m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+        TransformNode middleFingerSegment1Scale = new TransformNode("middle finger segment 1 transform", m);
+        MeshNode middleFingerSegment1Shape = new MeshNode("Sphere(middle finger segment 1)", sphere);
 
-    NameNode middleFingerSegment2 = new NameNode("middle finger segment 2");
-    TransformNode middleFingerSegment2Translate = new TransformNode("middle finger segment 2 translate",
-                                                                    Mat4Transform.translate(0,middleFingerHeight/3,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,middleFingerHeight/3,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode middleFingerSegment2Scale = new TransformNode("middle finger segment 2 transform", m);
-    MeshNode middleFingerSegment2Shape = new MeshNode("Sphere(middle finger segment 2)", sphere);
+          NameNode middleFingerSegment2 = new NameNode("middle finger segment 2");
+          TransformNode middleFingerSegment2Translate = new TransformNode("middle finger segment 2 translate",
+                                                                          Mat4Transform.translate(0,middleFingerHeight/3,0));
+          m = new Mat4(1);
+          m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,middleFingerHeight/3,fingerDepth));
+          m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+          TransformNode middleFingerSegment2Scale = new TransformNode("middle finger segment 2 transform", m);
+          MeshNode middleFingerSegment2Shape = new MeshNode("Sphere(middle finger segment 2)", sphere);
 
-    NameNode middleFingerSegment3 = new NameNode("middle finger segment 3");
-    TransformNode middleFingerSegment3Translate = new TransformNode("middle finger segment 3 translate",
-                                                                    Mat4Transform.translate(0,middleFingerHeight/3,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,middleFingerHeight/3,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode middleFingerSegment3Scale = new TransformNode("middle finger segment 3 transform", m);
-    MeshNode middleFingerSegment3Shape = new MeshNode("Sphere(middle finger segment 3)", sphere);
+            NameNode middleFingerSegment3 = new NameNode("middle finger segment 3");
+            TransformNode middleFingerSegment3Translate = new TransformNode("middle finger segment 3 translate",
+                                                                            Mat4Transform.translate(0,middleFingerHeight/3,0));
+            m = new Mat4(1);
+            m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,middleFingerHeight/3,fingerDepth));
+            m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+            TransformNode middleFingerSegment3Scale = new TransformNode("middle finger segment 3 transform", m);
+            MeshNode middleFingerSegment3Shape = new MeshNode("Sphere(middle finger segment 3)", sphere);
 
-    NameNode ringFingerSegment1 = new NameNode("ring finger segment 1");
-    TransformNode ringFingerSegment1TranslateOntoPalm = new TransformNode("ring finger segment 1 translate",
-                                                                    Mat4Transform.translate((-palmWidth/8),palmHeight,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,ringFingerHeight/3,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode ringFingerSegment1Scale = new TransformNode("ring finger segment 1 transform", m);
-    MeshNode ringFingerSegment1Shape = new MeshNode("Sphere(ring finger segment 1)", sphere);
+        NameNode ringFingerSegment1 = new NameNode("ring finger segment 1");
+        TransformNode ringFingerSegment1TranslateOntoPalm = new TransformNode("ring finger segment 1 translate",
+                                                                        Mat4Transform.translate((-palmWidth/8),palmHeight,0));
+        m = new Mat4(1);
+        m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,ringFingerHeight/3,fingerDepth));
+        m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+        TransformNode ringFingerSegment1Scale = new TransformNode("ring finger segment 1 transform", m);
+        MeshNode ringFingerSegment1Shape = new MeshNode("Sphere(ring finger segment 1)", sphere);
 
-    NameNode ringFingerSegment2 = new NameNode("ring finger segment 2");
-    TransformNode ringFingerSegment2Translate = new TransformNode("ring finger segment 2 translate",
-                                                                    Mat4Transform.translate(0,ringFingerHeight/3,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,ringFingerHeight/3,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode ringFingerSegment2Scale = new TransformNode("ring finger segment 2 transform", m);
-    MeshNode ringFingerSegment2Shape = new MeshNode("Sphere(ring finger segment 2)", sphere);
+          NameNode ringFingerSegment2 = new NameNode("ring finger segment 2");
+          TransformNode ringFingerSegment2Translate = new TransformNode("ring finger segment 2 translate",
+                                                                          Mat4Transform.translate(0,ringFingerHeight/3,0));
+          m = new Mat4(1);
+          m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,ringFingerHeight/3,fingerDepth));
+          m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+          TransformNode ringFingerSegment2Scale = new TransformNode("ring finger segment 2 transform", m);
+          MeshNode ringFingerSegment2Shape = new MeshNode("Sphere(ring finger segment 2)", sphere);
 
-    NameNode ringFingerSegment3 = new NameNode("ring finger segment 3");
-    TransformNode ringFingerSegment3Translate = new TransformNode("ring finger segment 3 translate",
-                                                                    Mat4Transform.translate(0,ringFingerHeight/3,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,ringFingerHeight/3,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode ringFingerSegment3Scale = new TransformNode("ring finger segment 3 transform", m);
-    MeshNode ringFingerSegment3Shape = new MeshNode("Sphere(ring finger segment 3)", sphere);
+            NameNode ringFingerSegment3 = new NameNode("ring finger segment 3");
+            TransformNode ringFingerSegment3Translate = new TransformNode("ring finger segment 3 translate",
+                                                                            Mat4Transform.translate(0,ringFingerHeight/3,0));
+            m = new Mat4(1);
+            m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,ringFingerHeight/3,fingerDepth));
+            m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+            TransformNode ringFingerSegment3Scale = new TransformNode("ring finger segment 3 transform", m);
+            MeshNode ringFingerSegment3Shape = new MeshNode("Sphere(ring finger segment 3)", sphere);
 
-    NameNode littleFingerSegment1 = new NameNode("little finger segment 1");
-    TransformNode littleFingerSegment1TranslateOntoPalm = new TransformNode("little finger segment 1 translate",
-                                                                    Mat4Transform.translate((-palmWidth*3/8),palmHeight,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,littleFingerHeight/3,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode littleFingerSegment1Scale = new TransformNode("little finger segment 1 transform", m);
-    MeshNode littleFingerSegment1Shape = new MeshNode("Sphere(little finger segment 1)", sphere);
+        NameNode littleFingerSegment1 = new NameNode("little finger segment 1");
+        TransformNode littleFingerSegment1TranslateOntoPalm = new TransformNode("little finger segment 1 translate",
+                                                                        Mat4Transform.translate((-palmWidth*3/8),palmHeight,0));
+        m = new Mat4(1);
+        m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,littleFingerHeight/3,fingerDepth));
+        m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+        TransformNode littleFingerSegment1Scale = new TransformNode("little finger segment 1 transform", m);
+        MeshNode littleFingerSegment1Shape = new MeshNode("Sphere(little finger segment 1)", sphere);
 
-    NameNode littleFingerSegment2 = new NameNode("little finger segment 2");
-    TransformNode littleFingerSegment2Translate = new TransformNode("little finger segment 2 translate",
-                                                                    Mat4Transform.translate(0,littleFingerHeight/3,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,littleFingerHeight/3,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode littleFingerSegment2Scale = new TransformNode("little finger segment 2 transform", m);
-    MeshNode littleFingerSegment2Shape = new MeshNode("Sphere(little finger segment 2)", sphere);
+          NameNode littleFingerSegment2 = new NameNode("little finger segment 2");
+          TransformNode littleFingerSegment2Translate = new TransformNode("little finger segment 2 translate",
+                                                                          Mat4Transform.translate(0,littleFingerHeight/3,0));
+          m = new Mat4(1);
+          m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,littleFingerHeight/3,fingerDepth));
+          m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+          TransformNode littleFingerSegment2Scale = new TransformNode("little finger segment 2 transform", m);
+          MeshNode littleFingerSegment2Shape = new MeshNode("Sphere(little finger segment 2)", sphere);
 
-    NameNode littleFingerSegment3 = new NameNode("little finger segment 3");
-    TransformNode littleFingerSegment3Translate = new TransformNode("little finger segment 3 translate",
-                                                                    Mat4Transform.translate(0,littleFingerHeight/3,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,littleFingerHeight/3,fingerDepth));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
-    TransformNode littleFingerSegment3Scale = new TransformNode("little finger segment 3 transform", m);
-    MeshNode littleFingerSegment3Shape = new MeshNode("Sphere(little finger segment 3)", sphere);
+            NameNode littleFingerSegment3 = new NameNode("little finger segment 3");
+            TransformNode littleFingerSegment3Translate = new TransformNode("little finger segment 3 translate",
+                                                                            Mat4Transform.translate(0,littleFingerHeight/3,0));
+            m = new Mat4(1);
+            m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth,littleFingerHeight/3,fingerDepth));
+            m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
+            TransformNode littleFingerSegment3Scale = new TransformNode("little finger segment 3 transform", m);
+            MeshNode littleFingerSegment3Shape = new MeshNode("Sphere(little finger segment 3)", sphere);
 
     armStructure.addChild(armStructureMoveTranslate);
       armStructureMoveTranslate.addChild(armStructureTranslate);
@@ -831,7 +801,6 @@ public class ArmStructure {
 
     armStructure.update();
     // armStructure.print(0, false);
-    // System.exit(0);
   }
 
   public void render(GL3 gl) {

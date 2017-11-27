@@ -9,11 +9,29 @@ import com.jogamp.opengl.util.glsl.*;
 
 public class WindowFrame {
 
+  // Room dimensions
+  private float roomWidth;
+  private float roomHeight;
+  private float roomDepth;
+
+  // Window frame measurements
+  private float frameWidth;
+  private float frameHeight;
+  private float frameDepth;
+  private float outerHBarHeight;
+  private float outerVBarWidth;
+  private float innerHBarHeight;
+  private float innerVBarWidth;
+  private float innerHBarWidth;
+  private float vBarHeight;
+
   public WindowFrame(Mesh cube, Vec3 roomDimensions) {
     this.cube = cube;
     this.roomWidth = roomDimensions.x;
     this.roomHeight = roomDimensions.y;
     this.roomDepth = roomDimensions.z;
+
+    // Compute window frame measurements
     frameWidth = 0.5f*roomDepth;
     frameHeight = 0.5f*roomHeight;
     frameDepth = 0.5f;
@@ -25,23 +43,6 @@ public class WindowFrame {
     vBarHeight = frameHeight - 2*outerHBarHeight;
   }
 
-  private float roomWidth = 0f;
-  private float roomHeight = 0f;
-  private float roomDepth = 0f;
-  private float width = 1;
-  private float height = 1;
-  private float depth = 1;
-
-  private float frameWidth;
-  private float frameHeight;
-  private float frameDepth;
-  private float outerHBarHeight;
-  private float outerVBarWidth;
-  private float innerHBarHeight;
-  private float innerVBarWidth;
-  private float innerHBarWidth;
-  private float vBarHeight;
-
   // ***************************************************
   /* THE SCENE
   * Now define all the methods to handle the scene.
@@ -52,9 +53,8 @@ public class WindowFrame {
   public void initialise(GL3 gl) {
 
     frame = new NameNode("frame root");
-
     TransformNode frameTranslate = new TransformNode("frame translate",
-                                            Mat4.multiply(Mat4Transform.translate(-0.5f*roomWidth, 0.25f*roomHeight, 0),Mat4Transform.rotateAroundY(90)));
+          Mat4.multiply(Mat4Transform.translate(-0.5f*roomWidth, 0.25f*roomHeight, 0),Mat4Transform.rotateAroundY(90)));
 
     NameNode frameH1 = new NameNode("frame H1");
     Mat4 m = Mat4Transform.scale(frameWidth,outerHBarHeight,frameDepth);
@@ -64,7 +64,7 @@ public class WindowFrame {
 
       NameNode frameV1 = new NameNode("frame V1");
       TransformNode frameV1Translate = new TransformNode("frame V1 translate",
-                                                       Mat4Transform.translate(-0.5f*frameWidth+0.5f*outerVBarWidth,outerHBarHeight,0));
+            Mat4Transform.translate(-0.5f*frameWidth+0.5f*outerVBarWidth,outerHBarHeight,0));
       m = new Mat4(1);
       m = Mat4Transform.scale(outerVBarWidth,vBarHeight,frameDepth);
       m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
@@ -73,7 +73,7 @@ public class WindowFrame {
 
         NameNode frameH2 = new NameNode("frame H2");
         TransformNode frameH2Translate = new TransformNode("frame H2 translate",
-                                                         Mat4Transform.translate(0.5f*frameWidth-0.5f*outerVBarWidth,0.5f*vBarHeight-0.5f*innerHBarHeight,0));
+              Mat4Transform.translate(0.5f*frameWidth-0.5f*outerVBarWidth,0.5f*vBarHeight-0.5f*innerHBarHeight,0));
         m = new Mat4(1);
         m = Mat4Transform.scale(innerHBarWidth,innerHBarHeight,frameDepth);
         m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
@@ -82,7 +82,7 @@ public class WindowFrame {
 
         NameNode frameH3 = new NameNode("frame H3");
         TransformNode frameH3Translate = new TransformNode("frame H3 translate",
-                                                         Mat4Transform.translate(0.5f*frameWidth-0.5f*outerVBarWidth,vBarHeight,0));
+              Mat4Transform.translate(0.5f*frameWidth-0.5f*outerVBarWidth,vBarHeight,0));
         m = new Mat4(1);
         m = Mat4Transform.scale(frameWidth,outerHBarHeight,frameDepth);
         m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
@@ -91,7 +91,7 @@ public class WindowFrame {
 
       NameNode frameV2 = new NameNode("frame V2");
       TransformNode frameV2Translate = new TransformNode("frame V2 translate",
-                                                       Mat4Transform.translate(0,outerHBarHeight,0));
+                                        Mat4Transform.translate(0,outerHBarHeight,0));
       m = new Mat4(1);
       m = Mat4Transform.scale(innerVBarWidth,vBarHeight,frameDepth);
       m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
@@ -100,13 +100,12 @@ public class WindowFrame {
 
       NameNode frameV3 = new NameNode("frame V3");
       TransformNode frameV3Translate = new TransformNode("frame V3 translate",
-                                                       Mat4Transform.translate(0.5f*frameWidth-0.5f*outerVBarWidth,outerHBarHeight,0));
+            Mat4Transform.translate(0.5f*frameWidth-0.5f*outerVBarWidth,outerHBarHeight,0));
       m = new Mat4(1);
       m = Mat4Transform.scale(outerVBarWidth,vBarHeight,frameDepth);
       m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
       TransformNode frameV3Scale = new TransformNode("frame V3 transform", m);
       MeshNode frameV3Shape = new MeshNode("Cube(frame V3)", cube);
-
 
 
     frame.addChild(frameTranslate);
@@ -136,7 +135,6 @@ public class WindowFrame {
 
     frame.update();
     // frame.print(0, false);
-
   }
 
   public void render(GL3 gl) {

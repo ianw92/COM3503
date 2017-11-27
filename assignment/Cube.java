@@ -14,16 +14,7 @@ public class Cube extends Mesh {
     super.indices = this.indices;
     this.textureId1 = textureId1;
     this.textureId2 = textureId2;
-    material.setAmbient(1.0f, 0.5f, 0.31f, "main");
-    material.setDiffuse(1.0f, 0.5f, 0.31f, "main");
-    material.setSpecular(0.5f, 0.5f, 0.5f, "main");
-    material.setAmbient(1.0f, 0.5f, 0.31f, "point");
-    material.setDiffuse(1.0f, 0.5f, 0.31f, "point");
-    material.setSpecular(0.5f, 0.5f, 0.5f, "point");
-    material.setAmbient(1.0f, 0.5f, 0.31f, "spot");
-    material.setDiffuse(1.0f, 0.5f, 0.31f, "spot");
-    material.setSpecular(0.5f, 0.5f, 0.5f, "spot");
-    material.setShininess(32.0f);
+    super.setupDefaultMaterialLighting();
     shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
     fillBuffers(gl);
   }

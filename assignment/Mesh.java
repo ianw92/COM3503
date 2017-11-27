@@ -50,6 +50,19 @@ public abstract class Mesh {
     gl.glDeleteBuffers(1, elementBufferId, 0);
   }
 
+  public void setupDefaultMaterialLighting() {
+    material.setAmbient(1.0f, 0.5f, 0.31f, "main");
+    material.setDiffuse(1.0f, 0.5f, 0.31f, "main");
+    material.setSpecular(0.5f, 0.5f, 0.5f, "main");
+    material.setAmbient(1.0f, 0.5f, 0.31f, "point");
+    material.setDiffuse(1.0f, 0.5f, 0.31f, "point");
+    material.setSpecular(0.5f, 0.5f, 0.5f, "point");
+    material.setAmbient(1.0f, 0.5f, 0.31f, "spot");
+    material.setDiffuse(1.0f, 0.5f, 0.31f, "spot");
+    material.setSpecular(0.5f, 0.5f, 0.5f, "spot");
+    material.setShininess(32.0f);
+  }
+
   public void setupShaderLights(Shader shader, GL3 gl, Light light, Material material) {
     shader.setVec3(gl, "pointLights[0].position", light.getPosition(0));
     shader.setFloat(gl, "pointLights[0].constant", 1.0f);
