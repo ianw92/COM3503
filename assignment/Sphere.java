@@ -49,11 +49,11 @@ public class Sphere extends Mesh {
 
     shader.setVec3(gl, "pointLights[1].position", light.getPosition(1));
     shader.setFloat(gl, "pointLights[1].constant", 1.0f);
-    shader.setFloat(gl, "pointLights[1].linear", 0.027f);
-    shader.setFloat(gl, "pointLights[1].quadratic", 0.0028f);
-    shader.setVec3(gl, "pointLights[1].ambient", light.getMaterial().getAmbient("point"));
-    shader.setVec3(gl, "pointLights[1].diffuse", light.getMaterial().getDiffuse("point"));
-    shader.setVec3(gl, "pointLights[1].specular", light.getMaterial().getSpecular("point"));
+    shader.setFloat(gl, "pointLights[1].linear", 0.007f);
+    shader.setFloat(gl, "pointLights[1].quadratic", 0.0002f);
+    shader.setVec3(gl, "pointLights[1].ambient", light.getMaterial().getAmbient("main"));
+    shader.setVec3(gl, "pointLights[1].diffuse", light.getMaterial().getDiffuse("main"));
+    shader.setVec3(gl, "pointLights[1].specular", light.getMaterial().getSpecular("main"));
 
     shader.setVec3(gl, "pointLights[2].position", light.getPosition(2));
     shader.setFloat(gl, "pointLights[2].constant", 1.0f);
@@ -78,6 +78,14 @@ public class Sphere extends Mesh {
     shader.setVec3(gl, "pointLights[4].ambient", light.getMaterial().getAmbient("point"));
     shader.setVec3(gl, "pointLights[4].diffuse", light.getMaterial().getDiffuse("point"));
     shader.setVec3(gl, "pointLights[4].specular", light.getMaterial().getSpecular("point"));
+
+    shader.setVec3(gl, "pointLights[5].position", light.getPosition(5));
+    shader.setFloat(gl, "pointLights[5].constant", 1.0f);
+    shader.setFloat(gl, "pointLights[5].linear", 0.027f);
+    shader.setFloat(gl, "pointLights[5].quadratic", 0.0028f);
+    shader.setVec3(gl, "pointLights[5].ambient", light.getMaterial().getAmbient("point"));
+    shader.setVec3(gl, "pointLights[5].diffuse", light.getMaterial().getDiffuse("point"));
+    shader.setVec3(gl, "pointLights[5].specular", light.getMaterial().getSpecular("point"));
 
     //SpotLight
     shader.setVec3(gl, "spotLight.position", light.getSpotLightPosition());

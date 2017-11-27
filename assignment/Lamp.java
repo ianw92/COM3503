@@ -40,14 +40,6 @@ public class Lamp {
    this.zPos = z;
   }
 
-  public void lightOn() {
-
-  }
-
-  public void lightOff() {
-
-  }
-
   // ***************************************************
   /* THE SCENE
   * Now define all the methods to handle the scene.
@@ -77,15 +69,6 @@ public class Lamp {
     TransformNode lampColumnScale = new TransformNode("lamp column transform", m);
     MeshNode lampColumnShape = new MeshNode("Cube(lamp column)", cube);
 
-    NameNode lampOrb = new NameNode("lamp orb");
-    TransformNode lampOrbTranslate = new TransformNode("lamp orb translate",
-                                                     Mat4Transform.translate(0,height,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(width*2f/3f,width*2f/3f,depth*2f/3f));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
-    TransformNode lampOrbScale = new TransformNode("lamp orb transform", m);
-    MeshNode lampOrbShape = new MeshNode("Sphere(lamp orb)", sphere);
-
     lamp.addChild(lampTranslate);
       lampTranslate.addChild(lampBase);
         lampBase.addChild(lampBaseTransform);
@@ -94,13 +77,9 @@ public class Lamp {
           lampColumn.addChild(lampColumnTranslate);
             lampColumnTranslate.addChild(lampColumnScale);
               lampColumnScale.addChild(lampColumnShape);
-            lampColumnTranslate.addChild(lampOrb);
-              lampOrb.addChild(lampOrbTranslate);
-                lampOrbTranslate.addChild(lampOrbScale);
-                  lampOrbScale.addChild(lampOrbShape);
 
     lamp.update();
-    lamp.print(0, false);
+    // lamp.print(0, false);
 
   }
 

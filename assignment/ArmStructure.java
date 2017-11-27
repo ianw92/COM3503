@@ -482,7 +482,6 @@ public class ArmStructure {
         x = 0f;
         y = (float)Math.sin(elapsedTime - animationTime);
         z = -1f + (float)Math.sin(elapsedTime - animationTime);
-        System.out.println("HSADKHSJ  " + elapsedTime);
       }
       else if (!animatedA) {
         // somewhere between 'I' and 'A'

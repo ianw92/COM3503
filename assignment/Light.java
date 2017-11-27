@@ -13,11 +13,11 @@ public class Light {
   private Shader shader;
   private Camera camera;
   private Mat4 perspective;
-  private float ambientLightLevelMain = 0.15f;
+  private float ambientLightLevelMain = 0.25f;
   private float diffuseLightLevelMain = 0.5f;
   private float specularLightLevelMain = 0.7f;
 
-  private float ambientLightLevelPoint = 0.05f;
+  private float ambientLightLevelPoint = 0.1f;
   private float diffuseLightLevelPoint = 0.4f;
   private float specularLightLevelPoint = 0.8f;
 
@@ -47,9 +47,6 @@ public class Light {
   }
 
   public void setLightLevel(float ambientLightLevel, float diffuseLightLevel, float specularLightLevel, String lightType) {
-    this.ambientLightLevelMain = ambientLightLevel;
-    this.diffuseLightLevelMain = diffuseLightLevel;
-    this.specularLightLevelMain = specularLightLevel;
     material.setAmbient(ambientLightLevel, ambientLightLevel, ambientLightLevel, lightType);
     material.setDiffuse(diffuseLightLevel, diffuseLightLevel, diffuseLightLevel, lightType);
     material.setSpecular(specularLightLevel, specularLightLevel, specularLightLevel, lightType);
@@ -101,10 +98,43 @@ public class Light {
     Mat4 mvpMatrix;
     gl.glBindVertexArray(vertexArrayId[0]);
 
+    shader.use(gl);
     for (int i = 0; i < pointLightPositions.length; i++) {
+      float mainAmbient = material.getAmbient("main").x;
+      float lampAmbient = material.getAmbient("point").x;
+      if (i==0 || i==1) {
+        if (mainAmbient==0) {
+          if (lampAmbient==0) {
+            shader.setFloat(gl, "lightColor", 0f);
+          }
+          else {
+            shader.setFloat(gl, "lightColor", 0.2f);
+          }
+        }
+        else {
+          shader.setFloat(gl, "lightColor", 1.0f);
+        }
+      }
+      else{
+        if (lampAmbient==0) {
+          if (mainAmbient==0) {
+            shader.setFloat(gl, "lightColor", 0f);
+          }
+          else {
+            shader.setFloat(gl, "lightColor", 0.2f);
+          }
+        }
+        else {
+          shader.setFloat(gl, "lightColor", 1.0f);
+        }
+      }
       model = new Mat4(1);
-      model = Mat4.multiply(Mat4Transform.scale(0.3f,0.3f,0.3f), model);
+      model = Mat4.multiply(Mat4Transform.scale(1f,1f,1f), model);
+      if (i==2 || i==3) {
+        model = Mat4.multiply(Mat4Transform.scale(2f,2f,2f), model);
+      }
       model = Mat4.multiply(Mat4Transform.translate(pointLightPositions[i]), model);
+      model = Mat4.multiply(Mat4Transform.translate(0,0.5f,0), model);
 
       mvpMatrix = Mat4.multiply(perspective, Mat4.multiply(camera.getViewMatrix(), model));
 
@@ -156,6 +186,7 @@ public class Light {
 
     private Vec3[] pointLightPositions = new Vec3[] {
       new Vec3(0f,30f,0f), //Main light on ceiling
+      new Vec3(-40f,40f,0f), //Main light to illuminate outside scene
       new Vec3(0f,0f,0f), //Lamp1
       new Vec3(0f,0f,0f), //Lamp2
       new Vec3(0f,0f,0f), //WallLamp1

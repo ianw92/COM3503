@@ -40,14 +40,6 @@ public class WallLamp {
    this.zPos = z;
   }
 
-  public void lightOn() {
-
-  }
-
-  public void lightOff() {
-
-  }
-
   // ***************************************************
   /* THE SCENE
   * Now define all the methods to handle the scene.
@@ -105,15 +97,6 @@ public class WallLamp {
     TransformNode wallLampColumn2Scale = new TransformNode("wallLamp column2 transform", m);
     MeshNode wallLampColumn2Shape = new MeshNode("Cube(wallLamp column2)", cube);
 
-    NameNode wallLampOrb = new NameNode("wallLamp orb");
-    TransformNode wallLampOrbTranslate = new TransformNode("wallLamp orb translate",
-                                                     Mat4Transform.translate(0,3f,0));
-    m = new Mat4(1);
-    m = Mat4.multiply(m, Mat4Transform.scale(1.5f,1.5f,1.5f));
-    m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
-    TransformNode wallLampOrbScale = new TransformNode("wallLamp orb transform", m);
-    MeshNode wallLampOrbShape = new MeshNode("Sphere(wallLamp orb)", sphere);
-
     wallLamp.addChild(wallLampTranslate);
       wallLampTranslate.addChild(wallLampBase);
         wallLampBase.addChild(wallLampBaseTransform);
@@ -131,13 +114,9 @@ public class WallLamp {
                     wallLampColumn2.addChild(wallLampColumn2Translate);
                         wallLampColumn2Translate.addChild(wallLampColumn2Scale);
                           wallLampColumn2Scale.addChild(wallLampColumn2Shape);
-                        wallLampColumn2Translate.addChild(wallLampOrb);
-                          wallLampOrb.addChild(wallLampOrbTranslate);
-                            wallLampOrbTranslate.addChild(wallLampOrbScale);
-                              wallLampOrbScale.addChild(wallLampOrbShape);
 
     wallLamp.update();
-    wallLamp.print(0, false);
+    // wallLamp.print(0, false);
 
   }
 

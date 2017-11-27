@@ -1,6 +1,7 @@
 import gmaths.*;
 
 import java.nio.*;
+import java.util.*;
 import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.util.*;
@@ -76,7 +77,7 @@ public class Arty_GLEventListener implements GLEventListener {
   }
 
   public void mainLightOn() {
-   light.setLightLevel(0.15f,0.5f,0.7f, "main");
+   light.setLightLevel(0.25f,0.5f,0.7f, "main");
   }
 
   public void lampsOff() {
@@ -84,7 +85,7 @@ public class Arty_GLEventListener implements GLEventListener {
   }
 
   public void lampsOn() {
-   light.setLightLevel(0.05f,0.4f,0.8f, "point");
+   light.setLightLevel(0.1f,0.4f,0.8f, "point");
   }
 
 
@@ -167,14 +168,18 @@ public class Arty_GLEventListener implements GLEventListener {
 
   private Camera camera;
   private Mat4 perspective;
-  private Mesh floor, wall1, wall2, wall3, ceiling, window, sphere, cube, cubeRing, sphereGemstone;
-  private TwoTriangles wall4_bottom, wall4_top, wall4_left, wall4_right;
+  private Mesh floor, wall1, wall2, wall3, ceiling, sphere, cube, cubeRing, sphereGemstone, cubeWindow, cubeLampFittings, sphereLampFittings;
+  private TwoTriangles wall4_bottom, wall4_top, wall4_left, wall4_right, outsideSceneBillboard, grassBillboard, skyBillboard;
+  private List<Mesh> meshList = new ArrayList<Mesh>();
+  private List<TwoTriangles> twoTrianglesList = new ArrayList<TwoTriangles>();
   private Light light;
 
   private ArmStructure armStructure;
   private Lamp lamp1, lamp2;
   private WallLamp wallLamp1, wallLamp2;
   private Room room;
+  private WindowFrame windowFrame;
+  private OutsideScene outsideScene;
 
   private void initialise(GL3 gl) {
     int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/chequerboard.jpg");
@@ -195,11 +200,36 @@ public class Arty_GLEventListener implements GLEventListener {
     int[] textureId15 = TextureLibrary.loadTexture(gl, "textures/hand2.jpg");
     int[] textureId16 = TextureLibrary.loadTexture(gl, "textures/wallAlphabet.jpg");
     int[] textureId17 = TextureLibrary.loadTexture(gl, "textures/outsideWithWindow.jpg");
+    int[] textureId18 = TextureLibrary.loadTexture(gl, "textures/outdoorScene1.jpg");
+    int[] textureId19 = TextureLibrary.loadTexture(gl, "textures/grass.jpg");
+    int[] textureId20 = TextureLibrary.loadTexture(gl, "textures/sky.jpg");
+    int[] textureId21 = TextureLibrary.loadTexture(gl, "textures/wood.jpg");
+    int[] textureId22 = TextureLibrary.loadTexture(gl, "textures/lampMetal.jpg");
 
     floor = new TwoTriangles(gl, textureId2);
     wall1 = new TwoTriangles(gl, textureId7);
     wall2 = new TwoTriangles(gl, textureId10);
     wall3 = new TwoTriangles(gl, textureId9);
+    ceiling = new TwoTriangles(gl, textureId11);
+    sphere = new Sphere(gl, textureId15, textureId15);
+    cube = new Cube(gl, textureId15, textureId4);
+    cubeRing = new Cube(gl, textureId13, textureId13);
+    sphereGemstone = new Sphere(gl, textureId14, textureId14);
+    cubeWindow = new Cube(gl, textureId21, textureId21);
+    cubeLampFittings = new Cube(gl, textureId22, textureId22);
+    sphereLampFittings = new Sphere(gl, textureId22, textureId22);
+    meshList.add(floor);
+    meshList.add(wall1);
+    meshList.add(wall2);
+    meshList.add(wall3);
+    meshList.add(ceiling);
+    meshList.add(sphere);
+    meshList.add(cube);
+    meshList.add(cubeRing);
+    meshList.add(sphereGemstone);
+    meshList.add(cubeWindow);
+    meshList.add(cubeLampFittings);
+    meshList.add(sphereLampFittings);
 
     float[] textureCoordsBottom = {0,0.25f,   0,0,   1,0,   1,0.25f};
     wall4_bottom = new TwoTriangles(gl, textureId16, textureCoordsBottom);
@@ -209,76 +239,62 @@ public class Arty_GLEventListener implements GLEventListener {
     wall4_left = new TwoTriangles(gl, textureId16, textureCoordsLeft);
     float[] textureCoordsRight = {0.75f, 0.75f,   0.75f, 0.25f,   1, 0.25f,   1, 0.75f};
     wall4_right = new TwoTriangles(gl, textureId16, textureCoordsRight);
-
-    ceiling = new TwoTriangles(gl, textureId11);
-    window = new TwoTriangles(gl, textureId17);
-    sphere = new Sphere(gl, textureId15, textureId15);
-    cube = new Cube(gl, textureId15, textureId4);
-    cubeRing = new Cube(gl, textureId13, textureId13);
-    sphereGemstone = new Sphere(gl, textureId14, textureId14);
+    outsideSceneBillboard = new TwoTriangles(gl, textureId18);
+    grassBillboard = new TwoTriangles(gl, textureId19);
+    skyBillboard = new TwoTriangles(gl, textureId20);
+    twoTrianglesList.add(wall4_bottom);
+    twoTrianglesList.add(wall4_top);
+    twoTrianglesList.add(wall4_left);
+    twoTrianglesList.add(wall4_right);
+    twoTrianglesList.add(outsideSceneBillboard);
+    twoTrianglesList.add(grassBillboard);
+    twoTrianglesList.add(skyBillboard);
 
     light = new Light(gl);
     light.setCamera(camera);
 
-    floor.setLight(light);
-    floor.setCamera(camera);
-    wall1.setLight(light);
-    wall1.setCamera(camera);
-    wall2.setLight(light);
-    wall2.setCamera(camera);
-    wall3.setLight(light);
-    wall3.setCamera(camera);
+    for (Mesh mesh : meshList) {
+      mesh.setLight(light);
+      mesh.setCamera(camera);
+    }
 
-    wall4_bottom.setLight(light);
-    wall4_bottom.setCamera(camera);
-    wall4_top.setLight(light);
-    wall4_top.setCamera(camera);
-    wall4_left.setLight(light);
-    wall4_left.setCamera(camera);
-    wall4_right.setLight(light);
-    wall4_right.setCamera(camera);
-
-    ceiling.setLight(light);
-    ceiling.setCamera(camera);
-    window.setLight(light);
-    window.setCamera(camera);
-    sphere.setLight(light);
-    sphere.setCamera(camera);
-    cube.setLight(light);
-    cube.setCamera(camera);
-    cubeRing.setLight(light);
-    cubeRing.setCamera(camera);
-    sphereGemstone.setLight(light);
-    sphereGemstone.setCamera(camera);
+    for (TwoTriangles tt : twoTrianglesList) {
+      tt.setLight(light);
+      tt.setCamera(camera);
+    }
 
     armStructure = new ArmStructure(cube, cubeRing, sphere, sphereGemstone);
     armStructure.initialise(gl);
 
-    lamp1 = new Lamp(cube, sphere);
+    windowFrame = new WindowFrame(cubeWindow);
+    windowFrame.initialise(gl);
+
+    lamp1 = new Lamp(cubeLampFittings, sphereLampFittings);
     lamp1.setSize(3,9,3);
     lamp1.setPosition(-18,0,-18);
     lamp1.initialise(gl);
-    light.setPointLightPosition(new Vec3(-18,10+(1f/3f*3f),-18), 1);
+    light.setPointLightPosition(new Vec3(-18,10,-18), 2);
 
-    lamp2 = new Lamp(cube, sphere);
+    lamp2 = new Lamp(cubeLampFittings, sphereLampFittings);
     lamp2.setSize(5,11,5);
     lamp2.setPosition(15,0,15);
     lamp2.initialise(gl);
-    light.setPointLightPosition(new Vec3(15,12f+(1f/3f*5f),15), 2);
+    light.setPointLightPosition(new Vec3(15,12,15), 3);
 
-    wallLamp1 = new WallLamp(cube, sphere);
+    wallLamp1 = new WallLamp(cubeLampFittings, sphereLampFittings);
     wallLamp1.setSize(3,9,3);
     wallLamp1.setPosition(-20,20,15);
     wallLamp1.initialise(gl);
-    light.setPointLightPosition(new Vec3((-20f+3f+0.5f+0.25f),(20f+3f+0.75f),15), 3);
+    light.setPointLightPosition(new Vec3((-20f+3f+0.5f+0.25f),(20f+3f+0.25f),15), 4);
 
-    wallLamp2 = new WallLamp(cube, sphere);
+    wallLamp2 = new WallLamp(cubeLampFittings, sphereLampFittings);
     wallLamp2.setSize(3,9,3);
     wallLamp2.setPosition(20,18,-3);
     wallLamp2.initialise(gl);
-    light.setPointLightPosition(new Vec3((20f-3f-0.5f-0.25f),(18f+3f+0.75f),-3), 4);
+    light.setPointLightPosition(new Vec3((20f-3f-0.5f-0.25f),(18f+3f+0.25f),-3), 5);
 
     room = new Room(floor, wall1, wall2, wall3, wall4_bottom, wall4_top, wall4_left, wall4_right, ceiling);
+    outsideScene = new OutsideScene(outsideSceneBillboard, grassBillboard, skyBillboard);
 
   }
 
@@ -288,64 +304,52 @@ public class Arty_GLEventListener implements GLEventListener {
     updateSpotLightPosition();
     updateSpotLightDirection();
 
+    if (animation) animate(startTime);
+
     light.render(gl);
     room.render(gl);
     lamp1.render(gl);
     lamp2.render(gl);
     wallLamp1.render(gl);
     wallLamp2.render(gl);
-    if (animation) animate(startTime);
     armStructure.render(gl);
+    windowFrame.render(gl);
+    outsideScene.render(gl);
   }
 
   private void updatePerspectiveMatrices() {
     // needs to be changed if user resizes the window
     perspective = Mat4Transform.perspective(45, aspect);
     light.setPerspective(perspective);
-    floor.setPerspective(perspective);
-    wall1.setPerspective(perspective);
-    wall2.setPerspective(perspective);
-    wall3.setPerspective(perspective);
-    wall4_bottom.setPerspective(perspective);
-    wall4_top.setPerspective(perspective);
-    wall4_left.setPerspective(perspective);
-    wall4_right.setPerspective(perspective);
-    ceiling.setPerspective(perspective);
-    window.setPerspective(perspective);
-    sphere.setPerspective(perspective);
-    cube.setPerspective(perspective);
-    cubeRing.setPerspective(perspective);
-    sphereGemstone.setPerspective(perspective);
+
+    for (Mesh mesh : meshList) {
+      mesh.setPerspective(perspective);
+    }
+
+    for (TwoTriangles tt : twoTrianglesList) {
+      tt.setPerspective(perspective);
+    }
   }
 
   private void disposeMeshes(GL3 gl) {
     light.dispose(gl);
-    floor.dispose(gl);
-    wall1.dispose(gl);
-    wall2.dispose(gl);
-    wall3.dispose(gl);
-    wall4_bottom.dispose(gl);
-    wall4_top.dispose(gl);
-    wall4_left.dispose(gl);
-    wall4_right.dispose(gl);
-    ceiling.dispose(gl);
-    window.dispose(gl);
-    sphere.dispose(gl);
-    cube.dispose(gl);
-    cubeRing.dispose(gl);
-    sphereGemstone.dispose(gl);
+    for (Mesh mesh : meshList) {
+      mesh.dispose(gl);
+    }
+
+    for (TwoTriangles tt : twoTrianglesList) {
+      tt.dispose(gl);
+    }
   }
 
   private void updateSpotLightPosition() {
     Vec3 pos = armStructure.getRingPosition();
     light.setSpotLightPosition(pos);
-    // System.out.println("Pos = " + light.getSpotLightPosition());
   }
 
   private void updateSpotLightDirection() {
     Vec3 direction = armStructure.getRingDirection();
     light.setSpotLightDirection(direction);
-    // System.out.println("Dir = " + light.getSpotLightDirection());
   }
 
 }
