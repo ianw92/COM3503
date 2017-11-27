@@ -9,17 +9,20 @@ import com.jogamp.opengl.util.glsl.*;
 
 public class OutsideScene {
 
-  public OutsideScene(Mesh sceneBillboard, Mesh grassBillboard, Mesh skyBillboard) {
+  public OutsideScene(Mesh sceneBillboard, Mesh grassBillboard, Mesh skyBillboard, Vec3 roomDimensions) {
     this.sceneBillboard = sceneBillboard;
     this.grassBillboard = grassBillboard;
     this.skyBillboard = skyBillboard;
+    this.roomWidth = roomDimensions.x;
+    this.roomHeight = roomDimensions.y;
+    this.roomDepth = roomDimensions.z;
   }
 
   private Mesh sceneBillboard, grassBillboard, skyBillboard;
 
-  private float roomHeight = 30f;
-  private float roomWidth = 40f;
-  private float roomDepth = 40f;
+  private float roomWidth = 0f;
+  private float roomHeight = 0f;
+  private float roomDepth = 0f;
 
   public void render(GL3 gl) {
     sceneBillboard.setModelMatrix(getMforSceneBillboard());       // possibly changing cube transform each frame

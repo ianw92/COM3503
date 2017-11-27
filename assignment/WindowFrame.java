@@ -9,26 +9,38 @@ import com.jogamp.opengl.util.glsl.*;
 
 public class WindowFrame {
 
-  public WindowFrame(Mesh cube) {
+  public WindowFrame(Mesh cube, Vec3 roomDimensions) {
     this.cube = cube;
+    this.roomWidth = roomDimensions.x;
+    this.roomHeight = roomDimensions.y;
+    this.roomDepth = roomDimensions.z;
+    frameWidth = 0.5f*roomDepth;
+    frameHeight = 0.5f*roomHeight;
+    frameDepth = 0.5f;
+    outerHBarHeight = 0.05f*roomHeight;
+    outerVBarWidth = outerHBarHeight;
+    innerHBarHeight = 0.5f*outerHBarHeight;
+    innerVBarWidth = innerHBarHeight;
+    innerHBarWidth = frameWidth - 2*outerVBarWidth;
+    vBarHeight = frameHeight - 2*outerHBarHeight;
   }
 
-  private float roomHeight = 30;
-  private float roomWidth = 40;
-  private float roomDepth = 40;
+  private float roomWidth = 0f;
+  private float roomHeight = 0f;
+  private float roomDepth = 0f;
   private float width = 1;
   private float height = 1;
   private float depth = 1;
 
-  private float frameWidth = 0.5f*roomDepth;
-  private float frameHeight = 0.5f*roomHeight;
-  private float frameDepth = 0.5f;
-  private float outerHBarHeight = 0.05f*roomHeight;
-  private float outerVBarWidth = outerHBarHeight;
-  private float innerHBarHeight = 0.5f*outerHBarHeight;
-  private float innerVBarWidth = innerHBarHeight;
-  private float innerHBarWidth = frameWidth - 2*outerVBarWidth;
-  private float vBarHeight = frameHeight - 2*outerHBarHeight;
+  private float frameWidth;
+  private float frameHeight;
+  private float frameDepth;
+  private float outerHBarHeight;
+  private float outerVBarWidth;
+  private float innerHBarHeight;
+  private float innerVBarWidth;
+  private float innerHBarWidth;
+  private float vBarHeight;
 
   // ***************************************************
   /* THE SCENE

@@ -9,7 +9,7 @@ import com.jogamp.opengl.util.glsl.*;
 
 public class Room {
 
-  public Room(Mesh floor, Mesh wall1, Mesh wall2, Mesh wall3, Mesh wall4_bottom, Mesh wall4_top, Mesh wall4_left, Mesh wall4_right, Mesh ceiling) {
+  public Room(Mesh floor, Mesh wall1, Mesh wall2, Mesh wall3, Mesh wall4_bottom, Mesh wall4_top, Mesh wall4_left, Mesh wall4_right, Mesh ceiling, Vec3 roomDimensions) {
     this.floor = floor;
     this.wall1 = wall1;
     this.wall2 = wall2;
@@ -19,13 +19,16 @@ public class Room {
     this.wall4_left = wall4_left;
     this.wall4_right = wall4_right;
     this.ceiling = ceiling;
+    this.roomWidth = roomDimensions.x;
+    this.roomHeight = roomDimensions.y;
+    this.roomDepth = roomDimensions.z;
   }
 
   private Mesh floor, wall1, wall2, wall3, wall4_bottom, wall4_top, wall4_left, wall4_right, ceiling;
 
-  private float roomHeight = 30f;
-  private float roomWidth = 40f;
-  private float roomDepth = 40f;
+  private float roomWidth = 0f;
+  private float roomHeight = 0f;
+  private float roomDepth = 0f;
 
   public void render(GL3 gl) {
     floor.setModelMatrix(getMforFloor());       // possibly changing cube transform each frame
@@ -46,7 +49,6 @@ public class Room {
     wall4_right.render(gl);
     ceiling.setModelMatrix(getMforCeiling());       // possibly changing cube transform each frame
     ceiling.render(gl);
-
   }
 
   // As the transforms do not change over time for this object, they could be stored once rather than continually being calculated
@@ -108,16 +110,6 @@ public class Room {
     model = Mat4.multiply(Mat4Transform.translate(-roomWidth*0.5f,roomHeight*0.5f,-roomDepth*0.375f), model);
     return model;
   }
-
-  // private Mat4 getMforWindow() {
-  //   float size = 40f;//25f
-  //   Mat4 model = new Mat4(1);
-  //   model = Mat4.multiply(Mat4Transform.scale(roomDepth*1f/2f,1f,roomHeight*1f/2f), model);
-  //   model = Mat4.multiply(Mat4Transform.rotateAroundY(90), model);
-  //   model = Mat4.multiply(Mat4Transform.rotateAroundZ(-90), model);
-  //   model = Mat4.multiply(Mat4Transform.translate(-roomWidth*0.5f,roomHeight*0.5f,0), model);
-  //   return model;
-  // }
 
   // Right Wall (from starting camera position)
   private Mat4 getMforWall3() {
