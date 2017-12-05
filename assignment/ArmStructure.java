@@ -591,9 +591,9 @@ public class ArmStructure {
 
           NameNode ringBand = new NameNode("ringBand");
           TransformNode ringBandTranslate = new TransformNode("ring band translate",
-                                                                Mat4Transform.translate(0,firstFingerHeight/9,0));
+                                                                Mat4Transform.translate(0,firstFingerHeight/9,-0.02f));
           m = new Mat4(1);
-          m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth+0.1f,firstFingerHeight/8,fingerDepth+0.1f));
+          m = Mat4.multiply(m, Mat4Transform.scale(fingerWidth+0.1f,firstFingerHeight/8,fingerDepth+0.2f));
           m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0)); // Position to y=0
           TransformNode ringBandScale = new TransformNode("ring band transform", m);
           MeshNode ringBandShape = new MeshNode("Cube(ring band)", cubeRing);
