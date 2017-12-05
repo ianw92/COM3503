@@ -64,6 +64,7 @@ public abstract class Mesh {
   }
 
   public void setupShaderLights(Shader shader, GL3 gl, Light light, Material material) {
+    // Ceiling Light
     shader.setVec3(gl, "pointLights[0].position", light.getPosition(0));
     shader.setFloat(gl, "pointLights[0].constant", 1.0f);
     shader.setFloat(gl, "pointLights[0].linear", 0.027f);
@@ -72,6 +73,7 @@ public abstract class Mesh {
     shader.setVec3(gl, "pointLights[0].diffuse", light.getMaterial().getDiffuse("main"));
     shader.setVec3(gl, "pointLights[0].specular", light.getMaterial().getSpecular("main"));
 
+    // Outside Light
     shader.setVec3(gl, "pointLights[1].position", light.getPosition(1));
     shader.setFloat(gl, "pointLights[1].constant", 1.0f);
     shader.setFloat(gl, "pointLights[1].linear", 0.007f);
@@ -80,6 +82,7 @@ public abstract class Mesh {
     shader.setVec3(gl, "pointLights[1].diffuse", light.getMaterial().getDiffuse("main"));
     shader.setVec3(gl, "pointLights[1].specular", light.getMaterial().getSpecular("main"));
 
+    // Lamps
     shader.setVec3(gl, "pointLights[2].position", light.getPosition(2));
     shader.setFloat(gl, "pointLights[2].constant", 1.0f);
     shader.setFloat(gl, "pointLights[2].linear", 0.027f);
@@ -112,7 +115,7 @@ public abstract class Mesh {
     shader.setVec3(gl, "pointLights[5].diffuse", light.getMaterial().getDiffuse("point"));
     shader.setVec3(gl, "pointLights[5].specular", light.getMaterial().getSpecular("point"));
 
-    //SpotLight
+    // Spot Light
     shader.setVec3(gl, "spotLight.position", light.getSpotLightPosition());
     shader.setVec3(gl, "spotLight.direction", light.getSpotLightDirection());
     shader.setFloat(gl, "spotLight.cutOff", (float)Math.cos(0.1f));
