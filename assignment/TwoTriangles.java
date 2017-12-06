@@ -1,3 +1,14 @@
+/* I declare that this code is my own work */
+/* I based it on 'Sphere.java' provided by Dr Steve Maddock in eSheet6/Week6_3_scene_graph/
+   and adapted it for my own use.
+   The changes to the original file have been line 26 instead of the block of material.set...() function calls
+   and line 38 instead of the block of shader.set...() function calls.
+   These blocks of code have been moved into methods in the super class Mesh.java
+   The other change has been the overloading of the constructor to also accept a set of texture coordinates.
+      This constructor is used for the wall with a window and differs from the original constructor as it calls a new
+      method I have written 'setTexCoords()' (line 66) */
+/* Author: Ian Williams, Email: iwilliams3@sheffield.ac.uk */
+
 import gmaths.*;
 import java.nio.*;
 import com.jogamp.common.nio.*;
@@ -13,7 +24,7 @@ public class TwoTriangles extends Mesh {
     super.indices = this.indices;
     this.textureId = textureId;
     super.setupDefaultMaterialLighting();
-    shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
+    shader = new Shader(gl, "vs_tt.txt", "fs_tt.txt");
     fillBuffers(gl);
   }
 
@@ -25,7 +36,7 @@ public class TwoTriangles extends Mesh {
     super.indices = this.indices;
     this.textureId = textureId;
     super.setupDefaultMaterialLighting();
-    shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
+    shader = new Shader(gl, "vs_tt.txt", "fs_tt.txt");
     fillBuffers(gl);
   }
 

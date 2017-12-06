@@ -1,3 +1,11 @@
+/* I declare that this code is my own work */
+/* I based it on 'Cube.java' provided by Dr Steve Maddock in eSheet6/Week6_3_scene_graph/
+   and adapted it for my own use.
+   The only changes to the original file have been line 25 instead of the block of material.set...() function calls
+   and line 38 instead of the block of shader.set...() function calls.
+   These blocks of code have been moved into methods in the super class Mesh.java */
+/* Author: Ian Williams, Email: iwilliams3@sheffield.ac.uk */
+
 import gmaths.*;
 import java.nio.*;
 import com.jogamp.common.nio.*;
@@ -15,7 +23,7 @@ public class Cube extends Mesh {
     this.textureId1 = textureId1;
     this.textureId2 = textureId2;
     super.setupDefaultMaterialLighting();
-    shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
+    shader = new Shader(gl, "vs_cube.txt", "fs_cube.txt");
     fillBuffers(gl);
   }
 

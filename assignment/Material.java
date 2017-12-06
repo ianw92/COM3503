@@ -1,3 +1,10 @@
+/* I declare that this code is my own work */
+/* I based it on 'Light.java' provided by Dr Steve Maddock in eSheet6/Week6_3_scene_graph/
+   and adapted it for my own use.
+   I have updated it to include properties for the different light types (main, point and spot)
+   I have therefore also changed the get and set methods for ambient, diffuse and specular */
+/* Author: Ian Williams, Email: iwilliams3@sheffield.ac.uk */
+
 import gmaths.*;
 
  /**

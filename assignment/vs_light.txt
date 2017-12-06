@@ -1,3 +1,5 @@
+/* Provided by Dr Steve Maddock as 'vs_light_01.txt' in eSheet6/Week6_3_scene_graph/. Has not been changed */
+
 #version 330 core
 
 layout (location = 0) in vec3 position;

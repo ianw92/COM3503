@@ -1,3 +1,8 @@
+/* I declare that this code is my own work */
+/* I based it on 'M04.java' provided by Dr Steve Maddock in eSheet6/Week6_3_scene_graph/
+   and adapted it for my own use */
+/* Author: Ian Williams, Email: iwilliams3@sheffield.ac.uk */
+
 import gmaths.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -58,16 +63,16 @@ public class Arty extends JFrame implements ActionListener {
       b = new JButton("reset hand");
       b.addActionListener(this);
       p.add(b);
-      b = new JButton("make 'I'");
+      b = new JButton("'I'");
       b.addActionListener(this);
       p.add(b);
-      b = new JButton("make 'A'");
+      b = new JButton("'A'");
       b.addActionListener(this);
       p.add(b);
-      b = new JButton("make 'N'");
+      b = new JButton("'N'");
       b.addActionListener(this);
       p.add(b);
-      b = new JButton("make vulcan");
+      b = new JButton("vulcan");
       b.addActionListener(this);
       p.add(b);
       b = new JButton("start");
@@ -112,16 +117,16 @@ public class Arty extends JFrame implements ActionListener {
     else if (e.getActionCommand().equalsIgnoreCase("reset hand")) {
       glEventListener.resetHand();
     }
-    else if (e.getActionCommand().equalsIgnoreCase("make 'I'")) {
+    else if (e.getActionCommand().equalsIgnoreCase("'I'")) {
       glEventListener.makeI();
     }
-    else if (e.getActionCommand().equalsIgnoreCase("make 'A'")) {
+    else if (e.getActionCommand().equalsIgnoreCase("'A'")) {
       glEventListener.makeA();
     }
-    else if (e.getActionCommand().equalsIgnoreCase("make 'N'")) {
+    else if (e.getActionCommand().equalsIgnoreCase("'N'")) {
       glEventListener.makeN();
     }
-    else if (e.getActionCommand().equalsIgnoreCase("make vulcan")) {
+    else if (e.getActionCommand().equalsIgnoreCase("vulcan")) {
       glEventListener.makeVulcan();
     }
     else if(e.getActionCommand().equalsIgnoreCase("quit"))
@@ -129,6 +134,8 @@ public class Arty extends JFrame implements ActionListener {
   }
 
 }
+
+/* No changes to the rest of this file from here on */
 
 class MyKeyboardInput extends KeyAdapter  {
   private Camera camera;

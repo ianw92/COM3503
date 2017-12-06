@@ -1,3 +1,12 @@
+/* I declare that this code is my own work */
+/* I based it on 'Light.java' provided by Dr Steve Maddock in eSheet6/Week6_3_scene_graph/
+   and adapted it for my own use.
+   Lines 9-60 are unchanged (bar being moved down 9 lines)
+   Lines 149 to the end also unchanged
+   I have updated the class to include methods that set up the material lighting and shader lights
+        These are used in Cube, Sphere and TwoTriangles */
+/* Author: Ian Williams, Email: iwilliams3@sheffield.ac.uk */
+
 import gmaths.*;
 import java.nio.*;
 import com.jogamp.common.nio.*;
@@ -50,6 +59,7 @@ public abstract class Mesh {
     gl.glDeleteBuffers(1, elementBufferId, 0);
   }
 
+  // Used in Cube, Sphere and TwoTriangles
   public void setupDefaultMaterialLighting() {
     material.setAmbient(1.0f, 0.5f, 0.31f, "main");
     material.setDiffuse(1.0f, 0.5f, 0.31f, "main");
@@ -63,6 +73,7 @@ public abstract class Mesh {
     material.setShininess(32.0f);
   }
 
+  // Used in Cube, Sphere and TwoTriangles
   public void setupShaderLights(Shader shader, GL3 gl, Light light, Material material) {
     // Ceiling Light
     shader.setVec3(gl, "pointLights[0].position", light.getPosition(0));
@@ -174,23 +185,10 @@ public abstract class Mesh {
     gl.glBindVertexArray(0);
   }
 
-  // public abstract void display(int indent);
-
   public abstract void render(GL3 gl, Mat4 model);
 
   public void render(GL3 gl) {
     render(gl, model);
   }
-
-  //public abstract void render(GL3 gl, Light light, Vec3 viewPosition, Mat4 perspective, Mat4 view);
-  /*public void render(GL3 gl, Light light, Vec3 viewPosition, Mat4 perspective, Mat4 view) {
-    setViewPosition(viewPosition);
-    setView(view);
-    setPerspective(perspective);
-    setLight(light);
-    render(gl, this.model);
-  }
-  */
-
 
 }

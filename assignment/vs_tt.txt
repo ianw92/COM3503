@@ -1,3 +1,5 @@
+/* Provided by Dr Steve Maddock as 'vs_tt_05.txt' in eSheet6/Week6_3_scene_graph/. Has not been changed */
+
 #version 330 core
 
 layout (location = 0) in vec3 position;
@@ -14,6 +16,10 @@ uniform mat4 mvpMatrix;
 void main() {
   gl_Position = mvpMatrix * vec4(position, 1.0);
   fragPos = vec3(model*vec4(position, 1.0f));
-  ourNormal = mat3(transpose(inverse(model))) * normal;  
+  mat4 normalMatrix = transpose(inverse(model));
+  vec3 norm = normalize(normal);
+  ourNormal = mat3(normalMatrix) * norm;
+
+  //ourNormal = vec3((normalMatrix) * vec4(normal,1.0));
   ourTexCoord = texCoord;
 }

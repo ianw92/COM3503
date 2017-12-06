@@ -1,3 +1,10 @@
+/* I declare that this code is my own work */
+/* I based it on 'Light.java' provided by Dr Steve Maddock in eSheet6/Week6_3_scene_graph/
+   and adapted it for my own use.
+   Line 191 to te end of the file are unchanged.
+   Most of the rest of the file has been changed to some extent. */
+/* Author: Ian Williams, Email: iwilliams3@sheffield.ac.uk */
+
 import gmaths.*;
 import java.nio.*;
 import com.jogamp.common.nio.*;
@@ -38,7 +45,7 @@ public class Light {
     material.setSpecular(specularLightLevelSpot, specularLightLevelSpot, specularLightLevelSpot, "spot");
     position = new Vec3(3f,2f,1f);
     model = new Mat4(1);
-    shader = new Shader(gl, "vs_light_01.txt", "fs_light_01.txt");
+    shader = new Shader(gl, "vs_light.txt", "fs_light.txt");
     fillBuffers(gl);
   }
 
@@ -168,6 +175,15 @@ public class Light {
    */
   // anticlockwise/counterclockwise ordering
 
+    private Vec3[] pointLightPositions = new Vec3[] {
+      new Vec3(0f,30f,0f), //Main light on ceiling
+      new Vec3(-40f,40f,0f), //Main light to illuminate outside scene
+      new Vec3(0f,0f,0f), //Lamp1
+      new Vec3(0f,0f,0f), //Lamp2
+      new Vec3(0f,0f,0f), //WallLamp1
+      new Vec3(0f,0f,0f), //WallLamp2
+    };
+
     private float[] vertices = new float[] {  // x,y,z
       -0.5f, -0.5f, -0.5f,  // 0
       -0.5f, -0.5f,  0.5f,  // 1
@@ -192,15 +208,6 @@ public class Light {
       5,1,0, // y -ve
       2,3,7, // y +ve
       7,6,2  // y +ve
-    };
-
-    private Vec3[] pointLightPositions = new Vec3[] {
-      new Vec3(0f,30f,0f), //Main light on ceiling
-      new Vec3(-40f,40f,0f), //Main light to illuminate outside scene
-      new Vec3(0f,0f,0f), //Lamp1
-      new Vec3(0f,0f,0f), //Lamp2
-      new Vec3(0f,0f,0f), //WallLamp1
-      new Vec3(0f,0f,0f), //WallLamp2
     };
 
   private int vertexStride = 3;

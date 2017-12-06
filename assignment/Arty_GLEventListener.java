@@ -1,3 +1,8 @@
+/* I declare that this code is my own work */
+/* I based it on 'M04_GLEventListener.java' provided by Dr Steve Maddock in eSheet6/Week6_3_scene_graph/
+   and adapted it for my own use. Lines 6-72 are unchanged (bar being moved down 6 lines) */
+/* Author: Ian Williams, Email: iwilliams3@sheffield.ac.uk */
+
 import gmaths.*;
 
 import java.nio.*;
@@ -178,62 +183,55 @@ public class Arty_GLEventListener implements GLEventListener {
   private Vec3 roomDimensions = new Vec3(40f,30f,40f);
 
   private void initialise(GL3 gl) {
-    int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/chequerboard.jpg");
-    int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/jade.jpg");
-    int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/jade_specular.jpg");
-    int[] textureId3 = TextureLibrary.loadTexture(gl, "textures/container2.jpg");
-    int[] textureId4 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
-    int[] textureId5 = TextureLibrary.loadTexture(gl, "textures/wattBook.jpg");
-    int[] textureId6 = TextureLibrary.loadTexture(gl, "textures/wattBook_specular.jpg");
-    int[] textureId7 = TextureLibrary.loadTexture(gl, "textures/wall1.jpg");
-    int[] textureId8 = TextureLibrary.loadTexture(gl, "textures/wall2.jpg");
-    int[] textureId9 = TextureLibrary.loadTexture(gl, "textures/wall3.jpg");
-    int[] textureId10 = TextureLibrary.loadTexture(gl, "textures/wall4.jpg");
-    int[] textureId11 = TextureLibrary.loadTexture(gl, "textures/ceiling.jpg");
-    int[] textureId12 = TextureLibrary.loadTexture(gl, "textures/floor.jpg");
-    int[] textureId13 = TextureLibrary.loadTexture(gl, "textures/ring.jpg");
-    int[] textureId14 = TextureLibrary.loadTexture(gl, "textures/gemstone.jpg");
-    int[] textureId15 = TextureLibrary.loadTexture(gl, "textures/hand2.jpg");
-    int[] textureId16 = TextureLibrary.loadTexture(gl, "textures/wallAlphabet.jpg");
-    int[] textureId17 = TextureLibrary.loadTexture(gl, "textures/outsideWithWindow.jpg");
-    int[] textureId18 = TextureLibrary.loadTexture(gl, "textures/outdoorScene1.jpg");
-    int[] textureId19 = TextureLibrary.loadTexture(gl, "textures/grass.jpg");
-    int[] textureId20 = TextureLibrary.loadTexture(gl, "textures/sky.jpg");
-    int[] textureId21 = TextureLibrary.loadTexture(gl, "textures/wood.jpg");
-    int[] textureId22 = TextureLibrary.loadTexture(gl, "textures/lampMetal.jpg");
+    int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/floor.jpg");
+    int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
+    int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/wall1.jpg");
+    int[] textureId3 = TextureLibrary.loadTexture(gl, "textures/wall3.jpg");
+    int[] textureId4 = TextureLibrary.loadTexture(gl, "textures/wall4.jpg");
+    int[] textureId5 = TextureLibrary.loadTexture(gl, "textures/ceiling.jpg");
+    int[] textureId6 = TextureLibrary.loadTexture(gl, "textures/ring.jpg");
+    int[] textureId7 = TextureLibrary.loadTexture(gl, "textures/gemstone.jpg");
+    int[] textureId8 = TextureLibrary.loadTexture(gl, "textures/hand2.jpg");
+    int[] textureId9 = TextureLibrary.loadTexture(gl, "textures/wallAlphabet.jpg");
+    int[] textureId10 = TextureLibrary.loadTexture(gl, "textures/outdoorScene1.jpg");
+    int[] textureId11 = TextureLibrary.loadTexture(gl, "textures/grass.jpg");
+    int[] textureId12 = TextureLibrary.loadTexture(gl, "textures/sky.jpg");
+    int[] textureId13 = TextureLibrary.loadTexture(gl, "textures/wood.jpg");
+    int[] textureId14 = TextureLibrary.loadTexture(gl, "textures/lampMetal.jpg");
 
     // Room components
-    floor = new TwoTriangles(gl, textureId2);
-    wall1 = new TwoTriangles(gl, textureId7);
-    wall2 = new TwoTriangles(gl, textureId10);
-    wall3 = new TwoTriangles(gl, textureId9);
+    floor = new TwoTriangles(gl, textureId0);
+    wall1 = new TwoTriangles(gl, textureId2);
+    wall2 = new TwoTriangles(gl, textureId4);
+    wall3 = new TwoTriangles(gl, textureId3);
+    // Texture co-ordinates for the wall with window parts
     float[] textureCoordsBottom = {0,0.25f,   0,0,   1,0,   1,0.25f};
     float[] textureCoordsTop = {0,1,   0,0.75f,   1,0.75f,   1,1};
     float[] textureCoordsLeft = {0,0.75f,   0,0.25f,    0.25f,0.25f,   0.25f,0.75f};
     float[] textureCoordsRight = {0.75f, 0.75f,   0.75f, 0.25f,   1, 0.25f,   1, 0.75f};
-    wall4_bottom = new TwoTriangles(gl, textureId16, textureCoordsBottom);
-    wall4_top = new TwoTriangles(gl, textureId16, textureCoordsTop);
-    wall4_left = new TwoTriangles(gl, textureId16, textureCoordsLeft);
-    wall4_right = new TwoTriangles(gl, textureId16, textureCoordsRight);
-    ceiling = new TwoTriangles(gl, textureId11);
+    wall4_bottom = new TwoTriangles(gl, textureId9, textureCoordsBottom);
+    wall4_top = new TwoTriangles(gl, textureId9, textureCoordsTop);
+    wall4_left = new TwoTriangles(gl, textureId9, textureCoordsLeft);
+    wall4_right = new TwoTriangles(gl, textureId9, textureCoordsRight);
+    ceiling = new TwoTriangles(gl, textureId5);
 
     // OutsideScene components
-    outsideSceneBillboard = new TwoTriangles(gl, textureId18);
-    grassBillboard = new TwoTriangles(gl, textureId19);
-    skyBillboard = new TwoTriangles(gl, textureId20);
+    outsideSceneBillboard = new TwoTriangles(gl, textureId10);
+    grassBillboard = new TwoTriangles(gl, textureId11);
+    skyBillboard = new TwoTriangles(gl, textureId12);
 
     // ArmStructure components
-    sphere = new Sphere(gl, textureId15, textureId15);
-    cube = new Cube(gl, textureId15, textureId4);
-    cubeRing = new Cube(gl, textureId13, textureId13);
-    sphereGemstone = new Sphere(gl, textureId14, textureId14);
+    sphere = new Sphere(gl, textureId8, textureId8);
+    cube = new Cube(gl, textureId8, textureId1);
+    cubeRing = new Cube(gl, textureId6, textureId6);
+    sphereGemstone = new Sphere(gl, textureId7, textureId7);
 
     // WindowFrame component
-    cubeWindow = new Cube(gl, textureId21, textureId21);
+    cubeWindow = new Cube(gl, textureId13, textureId13);
 
     // Lamp and WallLamp components
-    cubeLampFittings = new Cube(gl, textureId22, textureId22);
-    sphereLampFittings = new Sphere(gl, textureId22, textureId22);
+    cubeLampFittings = new Cube(gl, textureId14, textureId14);
+    sphereLampFittings = new Sphere(gl, textureId14, textureId14);
 
     // Add all meshes to list
     meshList.add(floor);
