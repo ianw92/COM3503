@@ -1,4 +1,5 @@
-/* Provided by Dr Steve Maddock as 'vs_light_01.txt' in eSheet6/Week6_3_scene_graph/. Has not been changed */
+/* Provided by Dr Steve Maddock as 'vs_light_01.txt' in eSheet6/Week6_3_scene_graph/.
+   Has not been changed apart from name */
 
 #version 330 core
 
